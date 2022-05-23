@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.ext.UserCouponDOMapperExt" >
+    <update id="setCouponExpireById">
+        UPDATE tb_user_coupon
+        SET is_expire = 'y',
+        update_time = #{updateTime}
+        WHERE
+            id = #{id}
+    </update>
+
+    <select id="selectByUserIdAndCouponId" resultMap="com.cdu.lys.graduation.repository.dao.UserCouponDOMapper.BaseResultMap">
+        SELECT
+        <include refid="com.cdu.lys.graduation.repository.dao.UserCouponDOMapper.Base_Column_List"></include>
+        FROM
+            tb_user_coupon
+        WHERE
+          user_id = #{userId}
+          AND coupon_id = #{couponId}
+          AND is_delete = 'n'
+    </select>
+    <select id="selectAllByUserId" resultMap="com.cdu.lys.graduation.repository.dao.UserCouponDOMapper.BaseResultMap">
+        SELECT
+        <include refid="com.cdu.lys.graduation.repository.dao.UserCouponDOMapper.Base_Column_List"></include>
+        FROM
+             tb_user_coupon
+        WHERE
+          user_id=#{userId}
+          AND is_delete='n'
+    </select>
+</mapper>

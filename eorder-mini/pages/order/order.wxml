@@ -1,0 +1,51 @@
+<view class="order-container">
+    <view class="order-bar">
+        <view class="order-title" bindtap="handleTitleTap" data-index="{{0}}">
+            <view class="order-title-text">全部订单</view>
+            <view wx:if="{{tabIdx==0}}" class="select-bar"></view>
+        </view>
+        <view class="order-title" bindtap="handleTitleTap" data-index="{{1}}">
+            <view class="order-title-text">待评价</view>
+            <view wx:if="{{tabIdx==1}}" class="select-bar"></view>
+        </view>
+        <view class="order-title" bindtap="handleTitleTap" data-index="{{2}}">
+            <view class="order-title-text">退款</view>
+            <view wx:if="{{tabIdx==2}}" class="select-bar"></view>
+        </view>
+    </view>
+
+    <view class="order-list-container">
+        <scroll-view style="height: 100%;" scroll-y="true" bindscrolltolower="handleReachBottom">
+            <view class="order-list" wx:for="{{orderPage.data}}" wx:for-item="order" wx:key="orderNum">
+                <view class="order-status float-right" bindtap="handle2Detail" data-order-num="{{order.orderNum}}">
+                    <block wx:if="{{order.tradeStatus==0}}">待支付</block>
+                    <block wx:if="{{order.tradeStatus==1}}">制作中</block>
+                    <block wx:if="{{order.tradeStatus==2}}">已完成</block>
+                    <block wx:if="{{order.tradeStatus==3}}">已取消</block>
+                </view>
+                <view class="order-info" bindtap="handle2Detail" data-order-num="{{order.orderNum}}">
+                    <view class="order-pic-container">
+                        <scroll-view class="scroll-order-pics" scroll-x="true">
+                            <view class="order-goods-pic" wx:for="{{order.goodsList}}" wx:for-item="goods" wx:key="goodsId">
+                                <image src="{{serverPrefix+goods.goodsPic}}"></image>
+                            </view>
+                        </scroll-view>
+                    </view>
+
+                    <view class="order-time order-item float-left">下单时间：{{order.createTime}}</view>
+                    <view class="order-num order-item float-left">订单编号：{{order.orderNum}}</view>
+                    <view class="order-price float-right">￥{{order.payAmount}}.00</view>
+                </view>
+
+                <view class="order-option">
+                    <view wx:if="{{order.tradeStatus==0}}" class="order-pay-now order-option-item float-right" bindtap="handlePayTap" data-index="{{index}}">立即支付</view>
+                    <view wx:if="{{order.tradeStatus==0}}" class="order-close order-option-item float-right" bindtap="handleCloseTap" data-index="{{index}}">关闭订单</view>
+                    <view wx:if="{{order.tradeStatus!=0}}" class="order-one-more order-option-item float-right" bindtap="handleReOrderTap" data-index="{{index}}">再来一单</view>
+                    <view wx:if="{{order.isComment=='n' && order.tradeStatus==2}}" class="order-one-comment order-option-item float-right" bindtap="handle2Comment" data-index="{{index}}">立即评论</view>
+                    <!-- <view class="order-delete order-option-item float-right" bindtap="handleDeleteOrder">删除订单</view> -->
+                </view>
+            </view>
+            <view class="bottom" wx:if="{{reachedBottom}}">我也是有底线的哦</view>
+        </scroll-view>
+    </view>
+</view>

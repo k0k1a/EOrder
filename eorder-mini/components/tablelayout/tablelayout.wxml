@@ -1,0 +1,23 @@
+<view style='height:100%; width:100%; position:fixed;'>
+  <!-- title -->
+  <view id="head" style='display:flex; flex-direction:left; align-items:center;'>
+    <view>
+      <view style='height:55rpx; display:flex; flex-direction:row; text-align:center;'><!-- 为什么 文字居中需要放在这一层 -->
+        <view wx:for="{{titles}}" style='width:100rpx;'>
+          <text data-index='{{index}}' bindtap='clickTitle'>{{item}}</text>
+        </view>
+      </view>
+      <!-- indicator -->
+      <view style='width:100rpx; height:5rpx; background:lightgray;' animation="{{animation}}"></view>
+    </view>
+  </view>
+
+  <!-- page -->
+  <swiper style='height:100%;' current="{{swiperIndex}}" bindtransition="swiperTrans" bindanimationfinish="swiperAnimationfinish" bindchange='swiperChange'>
+    <view wx:for="{{titles}}" wx:key="*this">
+      <swiper-item style='background:lightblue; display:flex; align-items:center; justify-content:center'>
+        <slot name="{{index}}"></slot>
+      </swiper-item>  
+    </view>
+  </swiper>
+</view>

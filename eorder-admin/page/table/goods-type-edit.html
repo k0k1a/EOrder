@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" lay-filter="goods-form">
+	<div class="layui-form-item">
+	    <label class="layui-form-label">id</label>
+	    <div class="layui-input-block">
+	        <input type="number" name="id" disabled="disabled" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+	    </div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label required">商品类型</label>
+		<div class="layui-input-block">
+			<input type="text" name="type" lay-verify="required" lay-reqtext="商品类型不能为空" placeholder="请输入商品类型" value="" class="layui-input">
+			<tip>建议不要输入重复的类型</tip>
+		</div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-add.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['form','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+    		upload = layui.upload;
+    
+    	var goodsType=layui.sessionData('goods-type-update')
+    	goodsType=goodsType.goodsType;
+    	
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+    		
+    		//点击保存
+    		var data=data.field;
+    		data.id=goodsType.id
+    		postData('/goods/type/update',JSON.stringify(data));
+    		layer.msg('保存成功')
+    		setTimeout(function(){
+    			var iframeIndex = parent.layer.getFrameIndex(window.name);
+    			parent.layer.close(iframeIndex);
+    			layui.sessionData('upload',null)
+    		},1000)
+            return false;
+        });
+    
+    	//表达数据回显，可以用Ajax请求，成功后回调回显
+    	form.val("goods-form",{
+			"id":goodsType.id,
+    		"type":goodsType.type
+    	})
+    });
+	
+
+	
+	
+</script>
+</body>
+</html>

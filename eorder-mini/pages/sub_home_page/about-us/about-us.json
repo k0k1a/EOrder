@@ -1,0 +1,6 @@
+{
+  "usingComponents": {},
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "小店详情",
+  "disableScroll": true
+}

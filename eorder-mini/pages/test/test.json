@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "searchInput":"/components/searchInput/searchInput",
+    "discount":"/components/discount/discount",
+    "tablelayout":"/components/tablelayout/tablelayout",
+    "sortType":"/components/sortType/sortType"
+  }
+}

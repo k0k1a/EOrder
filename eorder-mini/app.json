@@ -1,0 +1,55 @@
+{
+    "pages": [
+        
+        "pages/index/index",
+        "pages/sub_home_page/about-us/about-us",
+        "pages/sub_home_page/modify-userInfo/modify-user",
+        "pages/test/test",
+        "pages/sub_home_page/mytalk/mytalk",
+        "pages/sub_order_page/review/review",
+        "pages/sub_order_page/order_detail/detail",
+        "pages/sub_index_page/pay_success/pay_success",
+        "pages/sub_home_page/coupon/coupon",
+        "pages/sub_home_page/system_login/system_login",
+        "pages/sub_index_page/goods_info/goods_info",
+        "pages/order/order",
+        "pages/home/home",
+        "pages/sub_index_page/search/search",
+        "pages/sub_order_page/order_info/order_info",
+        "pages/sub_home_page/login/login"
+        
+    ],
+    "window": {
+        "backgroundTextStyle": "dark",
+        "navigationBarBackgroundColor": "#1296db",
+        "navigationBarTitleText": "易点",
+        "navigationBarTextStyle": "white",
+        "enablePullDownRefresh": true
+    },
+    "tabBar": {
+        "color": "#999",
+        "selectedColor": "#d66c5d",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "首页",
+                "iconPath": "img/icon/index-2.png",
+                "selectedIconPath": "img/icon/index-1.png"
+            },
+            {
+                "pagePath": "pages/order/order",
+                "text": "订单",
+                "iconPath": "img/icon/order-2.png",
+                "selectedIconPath": "img/icon/order-1.png"
+            },
+            {
+                "pagePath": "pages/home/home",
+                "text": "我的",
+                "iconPath": "img/icon/home-2.png",
+                "selectedIconPath": "img/icon/home-1.png"
+            }
+        ]
+    },
+    "style": "v2",
+    "sitemapLocation": "sitemap.json"
+}

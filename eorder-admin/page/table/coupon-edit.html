@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" lay-filter="goods-form">
+    <div class="layui-form-item">
+    	<label class="layui-form-label required">优惠券名称</label>
+    	<div class="layui-input-inline">
+    		<input type="text" name="couponName" lay-verify="required" lay-reqtext="优惠券不能为空" placeholder="请输入商品名称" value="" class="layui-input">
+    		<!-- <tip>填写自己管理账号的名称。</tip> -->
+    	</div>
+    </div>
+    <div class="layui-form-item">
+    	<label class="layui-form-label">用户群体</label>
+    	<div class="layui-input-inline">
+    	    <select name="userType" disabled lay-verify="required" lay-reqtext="请选择类型" lay-search="">
+    	        <option value="">请选择分类</option>
+    	        <option value="0">会员专享</option>
+    	        <option value="1">新用户专享</option>
+    	        <option value="2">老用户专享</option>
+    	    </select>
+    	</div>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label">满（元）</label>
+        <div class="layui-input-inline">
+            <input type="number" disabled name="reach" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+        </div>
+    	<label class="layui-form-label">减（元）</label>
+    	<div class="layui-input-inline">
+    	    <input type="number" disabled name="reduce" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+    	</div>
+    </div>
+    
+    <div class="layui-form-item">
+        <label class="layui-form-label required">数量</label>
+        <div class="layui-input-inline">
+            <input type="number" name="number" lay-verify="required" lay-reqtext="请输入数量" placeholder="" value="" class="layui-input">
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认修改</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-edit.js" charset="utf-8"></script>
+
+<script>
+
+    layui.use(['form','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+			upload = layui.upload;
+
+		var coupon=layui.sessionData('coupon-update')
+		coupon=coupon.coupon
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			
+			//点击保存
+			var data=data.field;
+			data.id=coupon.id
+			postData('/coupon/update',JSON.stringify(data));
+			layer.msg('修改成功')
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+			},1000)
+            return false;
+        });
+
+		//数据回显	
+		
+		$.ajax({
+			url: getRootUrl() + '/coupon/get',
+			type: 'GET',
+			headers: {
+				token: getToken()
+			},
+			data:{
+				couponId:coupon.id
+			},
+			dataType: 'json',
+			success(e) {
+				if(e.success){
+					var data=e.data
+					//表达数据回显，用Ajax请求，成功后回调回显
+					form.val("goods-form",{
+						"couponName":data.couponName,
+						"userType":data.userType,
+						"reach":data.reach,
+						"reduce":data.reduce,
+						"number":data.number
+					})
+				}
+			},
+			error(e) {
+				layer.msg('连接超时')
+				setTimeout(function(){
+					var iframeIndex = parent.layer.getFrameIndex(window.name);
+					parent.layer.close(iframeIndex);
+				},1000)
+			}
+		})
+		
+		
+		
+    });
+	
+
+	
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+<view class="container">
+    <!-- <view class="mini-program-icon">头像</view> -->
+    <view class="input">
+        <view class="wx-login" bindtap="login">
+            微信登录
+        </view>
+        <view class="system-login" bindtap="handleSystemLogin">账号密码登录/注册</view>
+    </view>
+
+    <view class="permit">
+        <view class="select">
+            <radio checked="{{checked}}" bindtap="radioTap"/>勾选代表您同意用户协议、隐私协议
+        </view>
+    </view>
+
+
+    <view class="alert" wx:if="{{alert}}" bindtap="changShowState">
+        请阅读并勾选底部协议
+    </view>
+
+</view>

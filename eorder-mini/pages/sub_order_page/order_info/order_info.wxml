@@ -1,0 +1,139 @@
+<view class="order-info-container">
+    <view class="card">
+        <view class="cart-bar">
+            <view class="title float-left">联系电话</view>
+            <view class="input float-right">
+                <input class="phone float-left" placeholder="请输入手机号码" type="number" value="{{userInfo.phone}}" />
+                <!-- <view class="re-input float-left">重新获取</view> -->
+                <button class="re-input float-left" open-type="getPhoneNumber" bindgetphonenumber="getPhoneNumber">重新获取</button>
+            </view>
+        </view>
+        <view class="cart-bar">
+            <picker mode="time" start="09:01" end="21:01" bindchange="handleTimeChange">
+                <view class="title float-left">取餐时间</view>
+                <view wx:if="{{!time}}" class="select float-right">请选择 ></view>
+                <view wx:if="{{time}}" class="select float-right">{{time}}</view>
+            </picker>
+        </view>
+        <view class="cart-bar" bindtap="handleSelectCouponTap">
+            <view class="title float-left">优惠券</view>
+            <view wx:if="{{!selectCoupon}}" class="select float-right">使用优惠券下单更优惠哦 ></view>
+            <view wx:if="{{selectCoupon}}" class="select float-right" style="color: red;font-size: 30rpx;">满{{selectCoupon.reach}}减{{selectCoupon.reduce}}</view>
+        </view>
+    </view>
+
+    <view class="order-goods-info card">
+        <view class="order-title-item">
+            商品明细
+        </view>
+        <view class="order-goods-items">
+            <block wx:for="{{cartList}}" wx:key="goodsId" wx:for-item="cart">
+                <view class="order-goods-item">
+                    <view class="order-goods-desc">
+                        <view class="goods-name desc-item">{{cart.goods.goodsName}}</view>
+                        <view class="goods-num desc-item">x{{cart.num}}</view>
+                        <view class="goods-price desc-item">￥{{cart.goods.price+cart.selectedOptions.extra}}.00</view>
+                    </view>
+                    <view wx:if="{{cart.selectedOptions.text.length>0}}" class="order-goods-option">已选：{{cart.selectedOptions.text}}</view>
+                </view>
+            </block>
+        </view>
+
+        <view class="order-goods-items">
+            <view class="selectCoupon-title">优惠券</view>
+            <view class="selectCoupon" wx:if="{{!selectCoupon.reduce}}">￥ 0.00</view>
+            <view class="selectCoupon red" wx:if="{{selectCoupon.reduce}}">-{{selectCoupon.reduce}}.00</view>
+        </view>
+
+        <view class="order-total">共计{{cartList.length}}件商品，小计：￥{{subTotal}}.00</view>
+        <view class="order-remark">
+            <view class="remark-title">备注</view>
+            <view class="remark-input">
+                <input placeholder="如需备注请输入" bindinput="handInputRemark" />
+            </view>
+        </view>
+    </view>
+</view>
+
+<view class="buy-bar">
+    <view class="total float-left">
+        <text>合计：</text>
+        <text class="color-red color-red">￥{{total}}</text>
+    </view>
+    <view class="buy-btn float-left" bindtap="handlePayTap">立即支付</view>
+</view>
+
+
+
+<!-- 优惠券 -->
+<view class="mask-layer" wx:if="{{couponState}}" catchtap="hideModel">
+</view>
+<!-- 优惠券详细弹出 -->
+<view class="coupon-info" wx:if="{{couponState}}" animation="{{animationData}}">
+    <view class="order-bar">
+        <view class="order-title" bindtap="handleTitleTap" data-index="0">
+            <view class="order-title-text">待领取</view>
+            <view wx:if="{{tabIndex==0}}" class="select-bar">
+            </view>
+
+        </view>
+        <view class="order-title" bindtap="handleTitleTap" data-index="1">
+            <view class="order-title-text">可使用</view>
+            <view wx:if="{{tabIndex==1}}" class="select-bar">
+            </view>
+        </view>
+        <view class="order-title" bindtap="handleTitleTap" data-index="2">
+            <view class="order-title-text">已失效</view>
+            <view wx:if="{{tabIndex==2}}" class="select-bar">
+            </view>
+        </view>
+    </view>
+
+    <!-- 待领取 -->
+    <view wx:if="{{tabIndex == 0}}" class="coupons-container">
+        <scroll-view class="coupon-scroll-view" scroll-y="true" bindscrolltolower="handleReachBottom1">
+            <view wx:if="{{coupon.data.length==0}}" class="empty">
+                <view class="nodata">
+                    <image src="/img/icon/no-data.png"></image>
+                    <text class="desc">暂无数据</text>
+                </view>
+            </view>
+
+            <view class="list" wx:for="{{coupon.data}}" wx:key="id" bindtap="handleCouponTap" data-id="{{item.id}}">
+                <view class="l">
+                    <view class="price"><text>¥</text>{{item.reduce}}</view>
+                    <view class="hreshold">满{{item.reach}}元可用</view>
+                </view>
+                <view class="r">
+                    <view class="name">{{item.couponName}}</view>
+                    <view wx:if="{{item.effectiveTime}}" class="times">领取后{{item.effectiveTime}}天内使用</view>
+                    <view wx:if="{{item.deadline}}" class="times">截止时间{{item.deadline}}</view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+
+    <!-- 其他两类 -->
+    <view wx:if="{{tabIndex != 0}}" class="coupons-container">
+        <scroll-view class="coupon-scroll-view" scroll-y="true" bindscrolltolower="handleReachBottom2">
+            <view wx:if="{{myCoupon.data.length<=0}}" class="empty">
+                <view class="nodata">
+                    <image src="/img/icon/no-data.png"></image>
+                    <text class="desc">暂无数据</text>
+                </view>
+            </view>
+
+            <view class="list" wx:for="{{myCoupon.data}}" wx:key="id" bindtap="{{tabIndex==1?'handleCouponUseTap':'handleExpireCouponTap'}}" data-coupon="{{item}}">
+                <view class="l">
+                    <view class="price"><text>¥</text>{{item.reduce}}</view>
+                    <view class="hreshold">满{{item.reach}}元可用</view>
+                </view>
+                <view class="r">
+                    <view wx:if="{{item.couponName}}" class="name">{{item.couponName}}</view>
+                    <view wx:if="{{item.expireTime}}" class="times">限{{item.expireTime}}前使用</view>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+    
+</view>

@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.SystemRecordDOMapper" >
+  <resultMap id="BaseResultMap" type="com.cdu.lys.graduation.repository.entity.SystemRecordDO" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="visit_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="sales" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="daily_income" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="daily_comment_num" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="record_date" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, visit_num, sales, daily_income, daily_comment_num, record_date
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_system_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_system_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_system_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDOExample" >
+    delete from tb_system_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_system_record (visit_num, sales, daily_income, 
+      daily_comment_num, record_date)
+    values (#{visitNum,jdbcType=INTEGER}, #{sales,jdbcType=INTEGER}, #{dailyIncome,jdbcType=DOUBLE}, 
+      #{dailyCommentNum,jdbcType=INTEGER}, #{recordDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_system_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="visitNum != null" >
+        visit_num,
+      </if>
+      <if test="sales != null" >
+        sales,
+      </if>
+      <if test="dailyIncome != null" >
+        daily_income,
+      </if>
+      <if test="dailyCommentNum != null" >
+        daily_comment_num,
+      </if>
+      <if test="recordDate != null" >
+        record_date,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="visitNum != null" >
+        #{visitNum,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null" >
+        #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="dailyIncome != null" >
+        #{dailyIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyCommentNum != null" >
+        #{dailyCommentNum,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null" >
+        #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDOExample" resultType="java.lang.Integer" >
+    select count(*) from tb_system_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_system_record
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.visitNum != null" >
+        visit_num = #{record.visitNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.sales != null" >
+        sales = #{record.sales,jdbcType=INTEGER},
+      </if>
+      <if test="record.dailyIncome != null" >
+        daily_income = #{record.dailyIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="record.dailyCommentNum != null" >
+        daily_comment_num = #{record.dailyCommentNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.recordDate != null" >
+        record_date = #{record.recordDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_system_record
+    set id = #{record.id,jdbcType=INTEGER},
+      visit_num = #{record.visitNum,jdbcType=INTEGER},
+      sales = #{record.sales,jdbcType=INTEGER},
+      daily_income = #{record.dailyIncome,jdbcType=DOUBLE},
+      daily_comment_num = #{record.dailyCommentNum,jdbcType=INTEGER},
+      record_date = #{record.recordDate,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDO" >
+    update tb_system_record
+    <set >
+      <if test="visitNum != null" >
+        visit_num = #{visitNum,jdbcType=INTEGER},
+      </if>
+      <if test="sales != null" >
+        sales = #{sales,jdbcType=INTEGER},
+      </if>
+      <if test="dailyIncome != null" >
+        daily_income = #{dailyIncome,jdbcType=DOUBLE},
+      </if>
+      <if test="dailyCommentNum != null" >
+        daily_comment_num = #{dailyCommentNum,jdbcType=INTEGER},
+      </if>
+      <if test="recordDate != null" >
+        record_date = #{recordDate,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdu.lys.graduation.repository.entity.SystemRecordDO" >
+    update tb_system_record
+    set visit_num = #{visitNum,jdbcType=INTEGER},
+      sales = #{sales,jdbcType=INTEGER},
+      daily_income = #{dailyIncome,jdbcType=DOUBLE},
+      daily_comment_num = #{dailyCommentNum,jdbcType=INTEGER},
+      record_date = #{recordDate,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

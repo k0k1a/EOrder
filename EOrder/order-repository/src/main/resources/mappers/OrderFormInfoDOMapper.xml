@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.OrderFormInfoDOMapper" >
+  <resultMap id="BaseResultMap" type="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="goods_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="goods_pic" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="goods_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="goods_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="goods_quantity" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="extra_price" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="extra_options" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="delivery_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, order_id, order_num, goods_id, goods_pic, goods_name, goods_price, goods_quantity,
+    extra_price, extra_options, delivery_status, create_time, update_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_order_form_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_order_form_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_order_form_info
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDOExample" >
+    delete from tb_order_form_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order_form_info (order_id, order_num, goods_id,
+    goods_pic, goods_name, goods_price,
+    goods_quantity, extra_price, extra_options,
+    delivery_status, create_time, update_time
+    )
+    values (#{orderId,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR}, #{goodsId,jdbcType=INTEGER},
+    #{goodsPic,jdbcType=VARCHAR}, #{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DOUBLE},
+    #{goodsQuantity,jdbcType=INTEGER}, #{extraPrice,jdbcType=DOUBLE}, #{extraOptions,jdbcType=VARCHAR},
+    #{deliveryStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{updateTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order_form_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        order_id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="goodsId != null" >
+        goods_id,
+      </if>
+      <if test="goodsPic != null" >
+        goods_pic,
+      </if>
+      <if test="goodsName != null" >
+        goods_name,
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price,
+      </if>
+      <if test="goodsQuantity != null" >
+        goods_quantity,
+      </if>
+      <if test="extraPrice != null" >
+        extra_price,
+      </if>
+      <if test="extraOptions != null" >
+        extra_options,
+      </if>
+      <if test="deliveryStatus != null" >
+        delivery_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="updateTime != null" >
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orderId != null" >
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsPic != null" >
+        #{goodsPic,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        #{goodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsQuantity != null" >
+        #{goodsQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="extraPrice != null" >
+        #{extraPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="extraOptions != null" >
+        #{extraOptions,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryStatus != null" >
+        #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDOExample" resultType="java.lang.Integer" >
+    select count(*) from tb_order_form_info
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_order_form_info
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderId != null" >
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsId != null" >
+        goods_id = #{record.goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.goodsPic != null" >
+        goods_pic = #{record.goodsPic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsName != null" >
+        goods_name = #{record.goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsPrice != null" >
+        goods_price = #{record.goodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.goodsQuantity != null" >
+        goods_quantity = #{record.goodsQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="record.extraPrice != null" >
+        extra_price = #{record.extraPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.extraOptions != null" >
+        extra_options = #{record.extraOptions,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryStatus != null" >
+        delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.updateTime != null" >
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_order_form_info
+    set id = #{record.id,jdbcType=INTEGER},
+    order_id = #{record.orderId,jdbcType=INTEGER},
+    order_num = #{record.orderNum,jdbcType=VARCHAR},
+    goods_id = #{record.goodsId,jdbcType=INTEGER},
+    goods_pic = #{record.goodsPic,jdbcType=VARCHAR},
+    goods_name = #{record.goodsName,jdbcType=VARCHAR},
+    goods_price = #{record.goodsPrice,jdbcType=DOUBLE},
+    goods_quantity = #{record.goodsQuantity,jdbcType=INTEGER},
+    extra_price = #{record.extraPrice,jdbcType=DOUBLE},
+    extra_options = #{record.extraOptions,jdbcType=VARCHAR},
+    delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO" >
+    update tb_order_form_info
+    <set >
+      <if test="orderId != null" >
+        order_id = #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsId != null" >
+        goods_id = #{goodsId,jdbcType=INTEGER},
+      </if>
+      <if test="goodsPic != null" >
+        goods_pic = #{goodsPic,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsName != null" >
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null" >
+        goods_price = #{goodsPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="goodsQuantity != null" >
+        goods_quantity = #{goodsQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="extraPrice != null" >
+        extra_price = #{extraPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="extraOptions != null" >
+        extra_options = #{extraOptions,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryStatus != null" >
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null" >
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO" >
+    update tb_order_form_info
+    set order_id = #{orderId,jdbcType=INTEGER},
+        order_num = #{orderNum,jdbcType=VARCHAR},
+        goods_id = #{goodsId,jdbcType=INTEGER},
+        goods_pic = #{goodsPic,jdbcType=VARCHAR},
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+        goods_price = #{goodsPrice,jdbcType=DOUBLE},
+        goods_quantity = #{goodsQuantity,jdbcType=INTEGER},
+        extra_price = #{extraPrice,jdbcType=DOUBLE},
+        extra_options = #{extraOptions,jdbcType=VARCHAR},
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

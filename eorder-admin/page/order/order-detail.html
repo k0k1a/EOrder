@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="delivery">确认配送</a>
+			<a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="refund">退款</a>
+        </script>
+		<div style="position: relative;left: 38%;">
+			<button id="shipAll" type="button" class="layui-btn layui-btn-sm layui-btn-normal">全部配送</button>
+			<button type="button" class="layui-btn layui-btn-sm layui-btn-danger">全部退款</button>
+		</div>
+    </div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-table.js"></script>
+
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+		var order=layui.sessionData('order').order
+        table.render({
+            elem: '#currentTableId',
+            url: getRootUrl()+'/order/detail',
+			method:'GET',
+			headers:{
+				token:getToken()
+			},
+			parseData:function(res){
+				return {
+					"code": res.code, //解析接口状态
+					"msg": res.message, //解析提示文本
+					"data": res.data //解析数据列表
+				}
+			},
+			where:{
+				orderNum:order.orderNum
+			},
+			height:200,
+            cols: [[
+                {field: 'goodsName', minWidth: 100, title: '商品名称'},
+				{field: 'goodsPrice', width: 80, title: '价格',align: "center"},
+				{field: 'goodsQuantity', width: 80, title: '数量', sort: true, align: "center"},
+				{field: 'extraOption', minWidth: 120, title: '其他', align: "center"},
+				{field: 'deliveryStatus', width: 120, title: '配送状态', align: "center"},
+				{title: '操作', width: 180, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            skin: 'row'
+        });
+
+		//配送单个
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'delivery') {
+				console.log(obj.data)
+				var rq={
+					orderInfoId:obj.data.id
+				}
+                var res=getData('/order/delivery/one',rq);
+				layer.msg(res.message)
+				if(res.success)
+					//执行搜索重载
+					table.reload('currentTableId', {});
+                return false;
+            } 
+        });
+
+    });
+	
+	//配送所有
+	$('#shipAll').click(function(e){
+		var order=layui.sessionData('order').order
+		var request={
+			orderNum:order.orderNum
+		}
+		var res=getData('/order/delivery/all',request);
+		layer.msg(res.message)
+		if(res.success){
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+			},1000)
+		}
+	})
+</script>
+
+</body>
+</html>

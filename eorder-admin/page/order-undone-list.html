@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>未完成订单</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">用户账号</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="username" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+						<div class="layui-inline">
+						    <label class="layui-form-label">订单号</label>
+						    <div class="layui-input-inline">
+						        <input type="text" name="orderNum" autocomplete="off" class="layui-input">
+						    </div>
+						</div>
+						<div class="layui-inline">
+						    <label class="layui-form-label">排队号</label>
+						    <div class="layui-input-inline">
+						        <input type="text" name="queueNum" autocomplete="off" class="layui-input">
+						    </div>
+						</div>
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="shippedAll"> 配送 </button>
+                <button class="layui-btn layui-btn-sm layui-btn-danger data-delete-btn" lay-event="delete"> 退款 </button>
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="shipped">配送</a>
+            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="refund">退款</a>
+        </script>
+
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/utils.js"></script>
+
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: getRootUrl()+'/order/list/undone',
+			method:'POST',
+			headers:{
+				token:getToken()
+			},
+			contentType:'application/json',
+			request:{
+				pageName:'pageNo',
+				limitName:'pageSize'
+			},
+			parseData:function(res){
+				return {
+					"code": res.code, //解析接口状态
+					"msg": res.message, //解析提示文本
+					"count": res.data.total, //解析数据长度
+					"data": res.data.data //解析数据列表
+				}
+			},
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {type: "checkbox", width: 50},
+                {field: 'id', width: 80, title: 'ID', sort: true},
+                {field: 'username', width: 120, title: '用户账号'},
+				{field: 'orderNum', width: 200, title: '订单号', align: "center",sort:true},
+				{field: 'queueNum', width: 80, title: '排队号', align: "center"},
+				{field: 'payStatus', width: 120, title: '付款状态', align: "center"},
+				{field: 'deliveryStatus', width: 120, title: '配送状态', align: "center"},
+				{field: 'tradeStatus', width: 120, title: '交易状态', align: "center"},
+				{field: 'remark', minWidth: 80, title: '备注', align: "center"},
+				{field: 'createTime', width: 160, title: '创建时间',sort:true, align: "center"},
+				{field: 'expireTime', width: 160, title: '失效时间', sort: true, align: "center"},
+				{field: 'closeTime', width: 160, title: '关闭时间', align: "center"},
+				{field: 'orderAmount', width: 150, title: '订单金额（元）', align: "center"},
+				{field: 'payAmount', width: 150, title: '支付金额（元）', align: "center"},
+				{field: 'couponAmount', width: 150, title: '优惠金额（元）', sort: true, align: "center"},
+                {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+			var param=data.field
+            //执行搜索重载
+            table.reload('currentTableId', {
+            	url: getRootUrl()+'/order/search',
+                where: {
+            		username:param.username,
+            		orderNum:param.orderNum,
+            		queueNum:param.queueNum,
+            		isUndone:true
+            	}
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'shippedAll') {  // 监听全部配送操作
+                
+				
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+		//操作列
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+            if (obj.event === 'shipped') {//配送
+
+				layui.sessionData('order',{
+					key:'order',
+					value:obj.data
+				})
+                var index = layer.open({
+                    title: '订单详情',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['60%', '53%'],
+                    content: '../page/order/order-detail.html',
+					success:function(){
+						
+					},
+					end:function(){
+						layui.sessionData('order',null)
+						//执行搜索重载
+						table.reload('currentTableId', {})
+					}
+                });
+				
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'refund') {
+                layer.confirm('真的删除行么', function (index) {
+					//删除商品
+					deleteGoodsById(obj.data.id);
+                    obj.del();
+                    layer.close(index);
+                });
+            }
+        });
+
+		//双击事件
+		table.on('rowDouble()',function(obj){
+			// console.log(obj.data) 得到当前行数据
+			
+			layui.sessionData('order',{
+				key:'order',
+				value:obj.data
+			})
+			var index = layer.open({
+			    title: '订单详情',
+			    type: 2,
+			    shade: 0.2,
+			    maxmin:true,
+			    shadeClose: true,
+			    area: ['60%', '53%'],
+			    content: '../page/order/order-detail.html',
+				end:function(){
+					layui.sessionData('order',null)
+					//执行搜索重载
+					table.reload('currentTableId', {})
+				}
+			});
+			
+			$(window).on("resize", function () {
+			    layer.full(index);
+			});
+		})
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<view class="home-container">
+    <view class="user-info">
+        
+        <!-- 已登录 -->
+        <block wx:if="{{isLogin}}">
+            <view class="user-header float-left" bindtap="handle2modify">
+                <block wx:if="{{userInfo.avatarUrl==null}}">
+                    <image src="/img/icon/default_header.png"></image>
+                </block>
+                <block wx:if="{{userInfo.avatarUrl!=null}}">
+                    <image src="{{userInfo.avatarUrl}}"></image>
+                </block>
+            </view>
+            <view class="user-name float-left" bindtap="handle2modify">{{userInfo.nickName}}</view>
+            <view class="user-phone float-left">**********</view>
+        </block>
+        
+        <block wx:if="{{!isLogin}}" >
+            <view class="user-header float-left">
+                <image src="/img/icon/default_header.png" bindtap="go2LoginPage"></image>
+            </view>
+            <view class="login float-left" bindtap="go2LoginPage">
+                登录/注册
+            </view>
+        </block>
+    </view>
+
+    <view class="home-item" bindtap="handleCouponTap">
+        <view class="item-icon float-left">
+            <image src="/img/icon/coupon.png"></image>
+        </view>
+        <view class="item-name float-left">优惠券</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view>
+
+    <!-- <view class="home-item">
+        <view class="item-icon float-left">
+            <image src="/img/icon/collection.png"></image>
+        </view>
+        <view class="item-name float-left">我的收藏</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view> -->
+
+    <view class="home-item" bindtap="handle2Mytalk">
+        <view class="item-icon float-left">
+            <image src="/img/icon/comment.png"></image>
+        </view>
+        <view class="item-name float-left">我的评论</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view>
+
+    <view class="home-item" bindtap="handle2MyOrder">
+        <view class="item-icon float-left">
+            <image src="/img/icon/my-order.png"></image>
+        </view>
+        <view class="item-name float-left">我的订单</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view>
+
+    <view class="home-item" wx:if="{{isLogin}}" bindtap="logout">
+        <view class="item-icon float-left">
+            <image src="/img/icon/logout.png"></image>
+        </view>
+        <view class="item-name float-left">退出登录</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view>
+
+    <view class="home-item" bindtap="handle2AboutUs">
+        <view class="item-icon float-left">
+            <image src="/img/icon/about-me.png"></image>
+        </view>
+        <view class="item-name float-left">关于我们</view>
+        <view class="item-right float-left">
+            <image src="/img/icon/toright.png"></image>
+        </view>
+    </view>
+    
+    <view class="version">v1.0.0</view>
+</view>

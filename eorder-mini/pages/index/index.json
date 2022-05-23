@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "searchInput":"/components/searchInput/searchInput",
+    "discount":"/components/discount/discount",
+    "sortType":"/components/sortType/sortType"
+  },
+  "enablePullDownRefresh": false,
+  "navigationBarTitleText": "首页",
+  "disableScroll": true
+}

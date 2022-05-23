@@ -1,0 +1,50 @@
+.modify-form form{
+    display:block;
+    padding:70rpx 70rpx 0 70rpx;
+}
+.label-list {
+    display: flex;
+    width: 100%;
+    height: 80rpx;
+    align-items: center;
+    border-bottom: 1px solid #e8e8e8;
+}
+.place {
+    display: flex;
+    align-items: center;
+    font-size: 30rpx;
+    color: #888888;
+} 
+.label-list .label {
+    color: #333;
+    font-size: 33rpx;
+}
+.label-list input{
+    padding-left: 20rpx;
+    flex: 1;
+    color: #333;
+    font-size: 33rpx;
+}
+.label-list image {
+    height: 80rpx;
+    width: 80rpx;
+    border-radius: 40rpx;
+}
+.label-lists {
+    justify-content: space-between;
+}
+.submit {
+    margin: 50rpx auto;
+    width: 200rpx;
+    height: 80rpx;
+    background-color: var(--themeColor);
+    color: #fff;
+    border-radius: 15rpx;
+    font-size: 35rpx;
+    line-height: 80rpx;
+    text-align: center;
+}
+.radio-group label{
+    padding-left: 30rpx;
+    font-size: 36rpx;
+}

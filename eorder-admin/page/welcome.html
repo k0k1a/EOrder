@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>首页</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../lib/font-awesome-4.7.0/css/font-awesome.min.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+    <style>
+        .top-panel {
+            border: 1px solid #eceff9;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .top-panel > .layui-card-body{
+            height: 60px;
+        }
+        .top-panel-number{
+            line-height:60px;
+            font-size: 30px;
+            border-right:1px solid #eceff9;
+        }
+        .top-panel-tips{
+            line-height:30px;
+            font-size: 12px
+        }
+    </style>
+</head>
+<body>
+<!--<div class="layuimini-container">-->
+<div class="layuimini-main">
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md3">
+
+            <div class="layui-card top-panel">
+                <div class="layui-card-header">访问量</div>
+                <div class="layui-card-body">
+                    <div class="layui-row layui-col-space5">
+                        <div id="visitNum" class="layui-col-xs9 layui-col-md9 top-panel-number">
+                            9,054,056
+                        </div>
+                        <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
+                            比昨天 <a id="visitRate" style="color: #1aa094">▲0.12</a><br>
+                            <!-- 比七日 <a style="color: #bd3004">▼0.06</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+		
+        <div class="layui-col-xs12 layui-col-md3">
+
+            <div class="layui-card top-panel">
+                <div class="layui-card-header">今日销量</div>
+                <div class="layui-card-body">
+                    <div class="layui-row layui-col-space5">
+                        <div id="saleNum" class="layui-col-xs9 layui-col-md9 top-panel-number">
+                            9,054,056
+                        </div>
+                        <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
+                            比昨天 <a id="saleRate" style="color: #1aa094">▲0.12</a><br>
+                            <!-- 比七日 <a style="color: #bd3004">▼0.06</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+		
+        <div class="layui-col-xs12 layui-col-md3">
+
+            <div class="layui-card top-panel">
+                <div class="layui-card-header">今日收入</div>
+                <div class="layui-card-body">
+                    <div class="layui-row layui-col-space5">
+                        <div id="income" class="layui-col-xs9 layui-col-md9 top-panel-number">
+                            9,054,056
+                        </div>
+                        <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
+                            比昨天 <a id="incomeRate" style="color: #1aa094">▲0.12</a><br>
+                            <!-- 比七日 <a style="color: #bd3004">▼0.06</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+		
+		<div class="layui-col-xs12 layui-col-md3">
+		
+		    <div class="layui-card top-panel">
+		        <div class="layui-card-header">今日评论</div>
+		        <div class="layui-card-body">
+		            <div class="layui-row layui-col-space5">
+		                <div id="comment" class="layui-col-xs9 layui-col-md9 top-panel-number">
+		                    9,054,056
+		                </div>
+		                <div class="layui-col-xs3 layui-col-md3 top-panel-tips">
+		                    比昨天 <a id="commentRate" style="color: #1aa094">▲0.12</a><br>
+		                    <!-- 比七日 <a style="color: #bd3004">▼0.06</a> -->
+		                </div>
+		            </div>
+		        </div>
+		    </div>
+		
+		</div>
+        
+    </div>
+
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-xs12 layui-col-md12">
+            <div id="echarts-records" style="background-color:#ffffff;min-height:400px;padding: 10px"></div>
+        </div>
+        
+    </div>
+
+</div>
+<!--</div>-->
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/utils.js"></script>
+<script src="../js/myjs/welcome.js"></script>
+
+<script>
+    layui.use(['layer', 'echarts'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            echarts = layui.echarts;
+
+		// 统计图数据
+		var bill=postData('/bill/list',JSON.stringify({
+			pageNo:1,
+			pageSize:7
+		}));
+		var billData=bill.data;
+		billData=billData.reverse()
+		var title=[]
+		var totalAmount=[]
+		var actualAmount=[]
+		var costAmount=[]
+		var netIncome=[]
+		var totalNumber=[]
+		var cancelNumber=[]
+		
+		billData.forEach(b=>{
+			title.push(b.billDate)
+			totalAmount.push(b.totalOrderAmount)
+			actualAmount.push(b.totalActualAmount)
+			costAmount.push(b.totalCost)
+			netIncome.push(b.netIncome)
+			totalNumber.push(b.totalNumber)
+			cancelNumber.push(b.cancelNumber)
+		})
+		
+        /**
+         * 报表功能
+         */
+        var echartsRecords = echarts.init(document.getElementById('echarts-records'), 'walden');
+        var optionRecords = {
+            title: {
+                text: '店铺统计图'
+            },
+            tooltip: {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            legend: {
+                data: ['总金额', '实际金额', '总成本', '净收入', '订单总量','订单取消数']
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            xAxis: [
+                {
+                    type: 'category',
+                    boundaryGap: false,
+                    data: title
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            series: [
+                {
+                    name: '总金额',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: totalAmount
+                },
+                {
+                    name: '实际金额',
+                    type: 'line',
+                    areaStyle: {},
+                    data: actualAmount
+                },
+                {
+                    name: '总成本',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: costAmount
+                },
+                {
+                    name: '净收入',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: netIncome
+                },
+                {
+                    name: '订单总量',
+                    type: 'line',
+                    stack: '总量',
+                    label: {
+                        normal: {
+                            show: true,
+                            position: 'top'
+                        }
+                    },
+                    areaStyle: {},
+                    data: totalNumber
+                },
+                {
+                    name: '订单取消数',
+                    type: 'line',
+                    stack: '总量',
+                    areaStyle: {},
+                    data: cancelNumber
+                }
+            ]
+        };
+        echartsRecords.setOption(optionRecords);
+
+
+        // echarts 窗口缩放自适应
+        window.onresize = function () {
+            echartsRecords.resize();
+        }
+
+    });
+</script>
+</body>
+</html>

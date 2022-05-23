@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+	<link rel="stylesheet" href="../../css/mycss/mycss.css" media="all" />
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" lay-filter="goods-form">
+    <div class="layui-form-item">
+		<label class="layui-form-label required">商品名称</label>
+		<div class="layui-input-block">
+			<input id="goodsName" type="text" name="goodsName" lay-verify="required" lay-reqtext="商品名称不能为空" placeholder="请输入商品名称" value="" class="layui-input">
+			<!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label">商品类型</label>
+		<div class="layui-input-inline">
+		    <select id="goodsType" name="goodsType" lay-verify="required" lay-reqtext="请选择类型" lay-search="">
+		        <option value="">请选择分类</option>
+		    </select>
+		</div>
+	</div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">商品描述</label>
+        <div class="layui-input-block">
+            <textarea id="description" name="description" placeholder="请输入商品描述内容" class="layui-textarea"></textarea>
+        </div>
+    </div>
+	<!-- <div class="layui-form-item layui-form-text">
+	    <label class="layui-form-label">商品图片</label>
+	    <div class="layui-input-inline">
+	        <button type="button" name="goodsPic" class="layui-btn" id="upload">
+	          <i class="layui-icon">&#xe67c;</i>上传图片
+	        </button>
+	    </div>
+	</div> -->
+	
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">价格（元）</label>
+	    <div class="layui-input-inline">
+	        <input id="price" type="number" name="price" lay-verify="required" lay-reqtext="请输入商品价格" placeholder="" value="" class="layui-input">
+	    </div>
+		<label class="layui-form-label required">成本（元）</label>
+		<div class="layui-input-inline">
+		    <input id="cost" type="number" name="cost" lay-verify="required" lay-reqtext="请输入商品成本" placeholder="" value="" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">库存（件）</label>
+	    <div class="layui-input-inline">
+	        <input id="stock" type="number" name="stock" lay-verify="required" lay-reqtext="请输入商品库存" placeholder="" value="" class="layui-input">
+	    </div>
+		
+		<label class="layui-form-label">原料</label>
+		<div class="layui-input-inline">
+		    <input id="ingredients" type="text" name="ingredients" placeholder="" value="" class="layui-input">
+		    <!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+	</div>
+	
+    <div class="layui-form-item">
+        <label class="layui-form-label">分量（g）</label>
+        <div class="layui-input-inline">
+            <input id="weight" type="text" name="weight" placeholder="" value="" class="layui-input">
+        </div>
+		<label class="layui-form-label">口味</label>
+		<div class="layui-input-inline">
+		    <input id="taste" type="text" name="taste" placeholder="" value="" class="layui-input">
+		</div>
+    </div>
+	
+	<div class="layui-form-item">
+	    <label class="layui-form-label">荤素</label>
+	    <div class="layui-input-block">
+	        <input id="isMeat" type="radio" name="isMeat" value="y" title="荤" checked="">
+	        <input id="isMeat" type="radio" name="isMeat" value="n" title="素">
+	    </div>
+	</div>
+	
+	<div class="layui-form-item layui-form-text">
+	    <label class="layui-form-label">商品图片</label>
+		<!-- <div id="goodsPictures"></div> -->
+		<div class="layui-carousel preCarousel" id="picCarousel">
+		  <div id="goodsPictures" carousel-item>
+		    
+		  </div>
+		</div>
+	    <div class="layui-input-inline">
+	        <button type="button" name="pic" class="layui-btn" id="upload">
+	          <i class="layui-icon">&#xe67c;</i>上传图片
+	        </button>
+	    </div>
+	</div>
+	
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">备注信息</label>
+        <div class="layui-input-block">
+            <textarea id="remark" name="remark" class="layui-textarea" placeholder="请输入备注信息"></textarea>
+        </div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认修改</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-edit.js" charset="utf-8"></script>
+
+<script>
+
+    layui.use(['form','upload','carousel'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+			upload = layui.upload,
+			carousel = layui.carousel;
+
+		var goods=layui.sessionData('goods-update')
+		goods=goods.goods;
+		
+		var uploadPics=[]
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			
+			var pics=[]
+			uploadPics.forEach(p=>{
+				pics.push({
+					picName:p.fileName,
+					picUrl:p.fileDownloadUri
+				});
+			})
+			var data=data.field;
+			data.pictures=pics;
+			data.id=goods.id
+			postData('/goods/update',JSON.stringify(data));
+			layer.msg('保存成功')
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+			},1000)
+            return false;
+        });
+		
+		//文件上传
+		var uploadInst = upload.render({
+			elem: '#upload', //绑定元素
+			url: getUploadUrl(), //上传接口
+			headers:{
+				token:getToken()
+			},
+			accept:'images',
+			acceptMime: 'image/*',
+			multiple:true,
+			number:3,
+			size:1024*3,
+			before:function(){
+				uploadPics=[]
+			},
+			done:function(res){
+				if(res.success){
+					var data=res.data;
+					uploadPics.push(data);
+					// layui.sessionData('upload',{key:'urls',value:pics})
+				}
+			},
+			allDone:function(obj){
+				if(obj.successful==obj.total){
+					layer.msg("上传成功")
+					$("#goodsPictures").empty();
+					uploadPics.forEach(picture=>{
+						var img = new Image();
+						img.src = getServerIPPrefix()+picture.fileDownloadUri;
+						$("#goodsPictures").append(img)
+					})
+					//渲染轮播图
+					renderCarousel('#picCarousel');
+				}else{
+					layer.msg(obj.aborted+"个上传失败")
+				}
+			},
+			error: function(){
+				//请求异常回调
+				layer.msg('图片上传失败')
+			}
+		});
+		
+    });
+</script>
+</body>
+</html>

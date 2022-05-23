@@ -1,0 +1,3 @@
+<view class="type-container {{selectedState ? 'select' : '' }}" bindtap="handleTap">
+    全部(333)
+</view>

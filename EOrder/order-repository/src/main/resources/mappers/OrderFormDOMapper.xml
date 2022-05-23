@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.OrderFormDOMapper" >
+  <resultMap id="BaseResultMap" type="com.cdu.lys.graduation.repository.entity.OrderFormDO" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="user_coupon_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="order_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="trade_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="pay_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="expire_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="close_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="order_amount" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="pay_amount" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="coupon_amount" jdbcType="DOUBLE" javaType="java.lang.Double" />
+      <arg column="pay_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="outer_trade_no" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="queue_num" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="delivery_status" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="is_comment" jdbcType="CHAR" javaType="java.lang.String" />
+      <arg column="comment_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, user_id, user_coupon_id, order_num, trade_status, pay_status, create_time, expire_time,
+    close_time, remark, order_amount, pay_amount, coupon_amount, pay_time, outer_trade_no,
+    queue_num, delivery_status, is_comment, comment_time
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDOExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from tb_order_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from tb_order_form
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_order_form
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDOExample" >
+    delete from tb_order_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order_form (user_id, user_coupon_id, order_num,
+    trade_status, pay_status, create_time,
+    expire_time, close_time, remark,
+    order_amount, pay_amount, coupon_amount,
+    pay_time, outer_trade_no, queue_num,
+    delivery_status, is_comment, comment_time
+    )
+    values (#{userId,jdbcType=INTEGER}, #{userCouponId,jdbcType=INTEGER}, #{orderNum,jdbcType=VARCHAR},
+    #{tradeStatus,jdbcType=INTEGER}, #{payStatus,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP},
+    #{expireTime,jdbcType=TIMESTAMP}, #{closeTime,jdbcType=TIMESTAMP}, #{remark,jdbcType=VARCHAR},
+    #{orderAmount,jdbcType=DOUBLE}, #{payAmount,jdbcType=DOUBLE}, #{couponAmount,jdbcType=DOUBLE},
+    #{payTime,jdbcType=TIMESTAMP}, #{outerTradeNo,jdbcType=VARCHAR}, #{queueNum,jdbcType=VARCHAR},
+    #{deliveryStatus,jdbcType=INTEGER}, #{isComment,jdbcType=CHAR}, #{commentTime,jdbcType=TIMESTAMP}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDO" >
+    <selectKey resultType="java.lang.Integer" keyProperty="id" order="AFTER" >
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into tb_order_form
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userCouponId != null" >
+        user_coupon_id,
+      </if>
+      <if test="orderNum != null" >
+        order_num,
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status,
+      </if>
+      <if test="payStatus != null" >
+        pay_status,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="expireTime != null" >
+        expire_time,
+      </if>
+      <if test="closeTime != null" >
+        close_time,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="orderAmount != null" >
+        order_amount,
+      </if>
+      <if test="payAmount != null" >
+        pay_amount,
+      </if>
+      <if test="couponAmount != null" >
+        coupon_amount,
+      </if>
+      <if test="payTime != null" >
+        pay_time,
+      </if>
+      <if test="outerTradeNo != null" >
+        outer_trade_no,
+      </if>
+      <if test="queueNum != null" >
+        queue_num,
+      </if>
+      <if test="deliveryStatus != null" >
+        delivery_status,
+      </if>
+      <if test="isComment != null" >
+        is_comment,
+      </if>
+      <if test="commentTime != null" >
+        comment_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userCouponId != null" >
+        #{userCouponId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeStatus != null" >
+        #{tradeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null" >
+        #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        #{orderAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="payAmount != null" >
+        #{payAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="couponAmount != null" >
+        #{couponAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="payTime != null" >
+        #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outerTradeNo != null" >
+        #{outerTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="queueNum != null" >
+        #{queueNum,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryStatus != null" >
+        #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isComment != null" >
+        #{isComment,jdbcType=CHAR},
+      </if>
+      <if test="commentTime != null" >
+        #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDOExample" resultType="java.lang.Integer" >
+    select count(*) from tb_order_form
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update tb_order_form
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userCouponId != null" >
+        user_coupon_id = #{record.userCouponId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNum != null" >
+        order_num = #{record.orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.tradeStatus != null" >
+        trade_status = #{record.tradeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.payStatus != null" >
+        pay_status = #{record.payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.createTime != null" >
+        create_time = #{record.createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.expireTime != null" >
+        expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.closeTime != null" >
+        close_time = #{record.closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.remark != null" >
+        remark = #{record.remark,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderAmount != null" >
+        order_amount = #{record.orderAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.payAmount != null" >
+        pay_amount = #{record.payAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.couponAmount != null" >
+        coupon_amount = #{record.couponAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="record.payTime != null" >
+        pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.outerTradeNo != null" >
+        outer_trade_no = #{record.outerTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.queueNum != null" >
+        queue_num = #{record.queueNum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.deliveryStatus != null" >
+        delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="record.isComment != null" >
+        is_comment = #{record.isComment,jdbcType=CHAR},
+      </if>
+      <if test="record.commentTime != null" >
+        comment_time = #{record.commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update tb_order_form
+    set id = #{record.id,jdbcType=INTEGER},
+    user_id = #{record.userId,jdbcType=INTEGER},
+    user_coupon_id = #{record.userCouponId,jdbcType=INTEGER},
+    order_num = #{record.orderNum,jdbcType=VARCHAR},
+    trade_status = #{record.tradeStatus,jdbcType=INTEGER},
+    pay_status = #{record.payStatus,jdbcType=INTEGER},
+    create_time = #{record.createTime,jdbcType=TIMESTAMP},
+    expire_time = #{record.expireTime,jdbcType=TIMESTAMP},
+    close_time = #{record.closeTime,jdbcType=TIMESTAMP},
+    remark = #{record.remark,jdbcType=VARCHAR},
+    order_amount = #{record.orderAmount,jdbcType=DOUBLE},
+    pay_amount = #{record.payAmount,jdbcType=DOUBLE},
+    coupon_amount = #{record.couponAmount,jdbcType=DOUBLE},
+    pay_time = #{record.payTime,jdbcType=TIMESTAMP},
+    outer_trade_no = #{record.outerTradeNo,jdbcType=VARCHAR},
+    queue_num = #{record.queueNum,jdbcType=VARCHAR},
+    delivery_status = #{record.deliveryStatus,jdbcType=INTEGER},
+    is_comment = #{record.isComment,jdbcType=CHAR},
+    comment_time = #{record.commentTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDO" >
+    update tb_order_form
+    <set >
+      <if test="userId != null" >
+        user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userCouponId != null" >
+        user_coupon_id = #{userCouponId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNum != null" >
+        order_num = #{orderNum,jdbcType=VARCHAR},
+      </if>
+      <if test="tradeStatus != null" >
+        trade_status = #{tradeStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payStatus != null" >
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="expireTime != null" >
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="closeTime != null" >
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="orderAmount != null" >
+        order_amount = #{orderAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="payAmount != null" >
+        pay_amount = #{payAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="couponAmount != null" >
+        coupon_amount = #{couponAmount,jdbcType=DOUBLE},
+      </if>
+      <if test="payTime != null" >
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="outerTradeNo != null" >
+        outer_trade_no = #{outerTradeNo,jdbcType=VARCHAR},
+      </if>
+      <if test="queueNum != null" >
+        queue_num = #{queueNum,jdbcType=VARCHAR},
+      </if>
+      <if test="deliveryStatus != null" >
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+      </if>
+      <if test="isComment != null" >
+        is_comment = #{isComment,jdbcType=CHAR},
+      </if>
+      <if test="commentTime != null" >
+        comment_time = #{commentTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cdu.lys.graduation.repository.entity.OrderFormDO" >
+    update tb_order_form
+    set user_id = #{userId,jdbcType=INTEGER},
+        user_coupon_id = #{userCouponId,jdbcType=INTEGER},
+        order_num = #{orderNum,jdbcType=VARCHAR},
+        trade_status = #{tradeStatus,jdbcType=INTEGER},
+        pay_status = #{payStatus,jdbcType=INTEGER},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        expire_time = #{expireTime,jdbcType=TIMESTAMP},
+        close_time = #{closeTime,jdbcType=TIMESTAMP},
+        remark = #{remark,jdbcType=VARCHAR},
+        order_amount = #{orderAmount,jdbcType=DOUBLE},
+        pay_amount = #{payAmount,jdbcType=DOUBLE},
+        coupon_amount = #{couponAmount,jdbcType=DOUBLE},
+        pay_time = #{payTime,jdbcType=TIMESTAMP},
+        outer_trade_no = #{outerTradeNo,jdbcType=VARCHAR},
+        queue_num = #{queueNum,jdbcType=VARCHAR},
+        delivery_status = #{deliveryStatus,jdbcType=INTEGER},
+        is_comment = #{isComment,jdbcType=CHAR},
+        comment_time = #{commentTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

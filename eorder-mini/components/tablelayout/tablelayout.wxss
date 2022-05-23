@@ -1,0 +1,21 @@
+.title{
+    display:flex; 
+    flex-direction:left; 
+    align-items:center;
+}
+
+.title .title_name{
+    height:55rpx; 
+    display:flex; 
+    flex-direction:row; 
+    text-align:center;
+    
+}
+.active{
+    border-bottom: 5rpx solid lightgray;
+}
+/* .title .indicator{
+    width:100rpx; 
+    height:5rpx; 
+    background:lightgray;
+} */

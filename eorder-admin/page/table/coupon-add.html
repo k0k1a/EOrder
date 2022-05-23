@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+    <div class="layui-form-item">
+		<label class="layui-form-label required">优惠券名称</label>
+		<div class="layui-input-inline">
+			<input type="text" name="couponName" lay-verify="required" lay-reqtext="优惠券名称不能为空" placeholder="请输入商品名称" value="" class="layui-input">
+			<!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label required">用户群体</label>
+		<div class="layui-input-inline">
+		    <select name="userType" lay-verify="required" lay-reqtext="请选择类型" lay-search="">
+		        <option value="">请选择分类</option>
+		        <option value="0">会员专享</option>
+		        <option value="1">新用户专享</option>
+		        <option value="2">老用户专享</option>
+		    </select>
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">满（元）</label>
+	    <div class="layui-input-inline">
+	        <input type="number" name="reach" lay-verify="required" lay-reqtext="请输入优惠券达到金额" placeholder="" value="" class="layui-input">
+	    </div>
+		<label class="layui-form-label required">减（元）</label>
+		<div class="layui-input-inline">
+		    <input type="number" name="reduce" lay-verify="required" lay-reqtext="请输入优惠金额" placeholder="" value="" class="layui-input">
+		</div>
+	</div>
+
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">数量</label>
+	    <div class="layui-input-inline">
+	        <input type="number" name="number" lay-verify="required" lay-reqtext="请输入优惠券数量" placeholder="" value="" class="layui-input">
+	    </div>
+	</div>
+	
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">截止时间</label>
+	    <div class="layui-input-inline">
+	        <input id="deadline" type="text" name="deadline" placeholder="" autocomplete="off" class="layui-input">
+	    </div>
+	</div>
+	
+	<div class="layui-form-item">
+	    <label class="layui-form-label required">优惠券有效期（天）</label>
+	    <div class="layui-input-inline">
+	        <input type="number" name="effectiveTime" lay-verify="required" lay-reqtext="请输入优惠券数量" placeholder="" value="" class="layui-input">
+	    </div>
+	</div>
+	
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-add.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['form','upload','laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+			upload = layui.upload,
+			laydate = layui.laydate;
+
+		//日期
+		laydate.render({
+			elem: '#deadline' ,//指定元素
+			type: 'datetime',
+			min:1,
+			calendar:true,
+			// position:'fixed'
+		});
+		
+		var goodsId;
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			
+			// addGoods(JSON.stringify(data.field))
+			// var goodsId=postData('/goods/add',JSON.stringify(data.field));
+			// console.log('goodsId='+goodsId)
+			
+			
+			var data=data.field;
+			postData('/coupon/add',JSON.stringify(data));
+			layer.msg('保存成功')
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+				layui.sessionData('upload',null)
+			},1000)
+			
+			
+            return false;
+        });
+		
+		//文件上传
+		var uploadInst = upload.render({
+			elem: '#upload', //绑定元素
+			url: getRootUrl()+'/goods/upload', //上传接口
+			headers:{
+				token:getToken()
+			},
+			// field:'goodsPics',
+			// auto:false,
+			accept:'images',
+			acceptMime: 'image/*',
+			multiple:true,
+			number:5,
+			// bindAction:'#save',
+			choose:function(obj){
+				obj.preview(function(index,file,result){
+					layui.sessionData('upload',{key:file.name,value:result})
+				})
+			},
+			error: function(){
+				//请求异常回调
+				layer.msg('图片上传成功')
+			}
+		});
+
+    });
+	
+
+	
+	
+</script>
+</body>
+</html>

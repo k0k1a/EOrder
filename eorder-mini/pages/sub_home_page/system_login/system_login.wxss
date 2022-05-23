@@ -1,0 +1,61 @@
+page{
+    width: 100%;
+    height: 100%;
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}
+.container{
+    width: auto;
+    height: 100%;
+}
+.input-container{
+    width: 700rpx;
+    height: 300rpx;
+    position: fixed;
+    top: 200rpx;
+    left: 25rpx;
+}
+.input-item{
+    margin: 30rpx auto;
+    width: 600rpx;
+    height: 70rpx;
+    border-bottom: 0.5rpx solid #cacaca;
+}
+.input-phone{
+    width: 400rpx;
+}
+.input-code{
+    width: 200rpx;
+    height: 70rpx;
+    line-height: 70rpx;
+    text-align: right;
+    color: #888888;
+}
+.code-active{
+    color: var(--themeColor);
+}
+.input-item input{
+    /* width: auto; */
+    height: 70rpx;
+    line-height: 70rpx;
+    font-size: 30rpx;
+}
+.login-btn{
+    margin: 30rpx auto;
+    width: 600rpx;
+    height: 70rpx;
+    color: #888888;
+    background-color: #cccccc;
+    line-height: 70rpx;
+    font-size: 30rpx;
+    text-align: center;
+    border-radius: 5rpx;
+}
+.login-active{
+    color: #ffffff;
+    background-color: var(--themeColor);
+}
