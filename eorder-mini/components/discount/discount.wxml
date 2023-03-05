@@ -1,0 +1,3 @@
+<view class="discountBar">
+        满{{upto}}减{{down}}
+</view>

@@ -1,0 +1,107 @@
+{
+	"homeInfo": {
+		"title": "首页",
+		"href": "page/welcome.html?t=1"
+	},
+	"logoInfo": {
+		"title": "易点",
+		"image": "images/logo.png",
+		"href": ""
+	},
+	"menuInfo": [{
+			"title": "店铺中心",
+			"icon": "fa fa-address-book",
+			"href": "",
+			"target": "_self",
+			"child": [{
+					"title": "主页",
+					"href": "page/welcome.html?t=1",
+					"icon": "fa fa-home",
+					"target": "_self"
+				},
+				{
+					"title": "订单中心",
+					"href": "",
+					"icon": "fa fa-window-maximize",
+					"target": "_self",
+					"child": [{
+							"title": "进行中订单",
+							"href": "page/order-undone-list.html",
+							"icon": "fa fa-file-text",
+							"target": "_self"
+						},
+						{
+							"title": "所有订单",
+							"href": "page/order-all-list.html",
+							"icon": "fa fa-pencil",
+					  "target": "_self"
+						}
+					]
+				},
+				{
+					"title": "商品管理",
+					"href": "",
+					"icon": "fa fa-gears",
+					"target": "_self",
+					"child": [{
+							"title": "商品信息",
+							"href": "page/goods_table.html",
+							"icon": "fa fa-file-text",
+							"target": "_self"
+						},
+						{
+							"title": "商品类型",
+							"href": "page/goods-type.html",
+							"icon": "fa fa-pencil",
+							"target": "_self"
+						},
+						{
+							"title": "商品规格",
+							"href": "page/goods-option.html",
+							"icon": "fa fa-asterisk",
+							"target": "_self"
+						}
+						
+					]
+				},
+				{
+					"title": "优惠中心",
+					"href": "page/coupon-list.html",
+					"icon": "fa fa-calendar",
+					"target": "_self"
+				},
+				{
+					"title": "评价中心",
+					"href": "page/comment-list.html",
+					"icon": "fa fa-comments",
+					"target": "_self"
+				},
+				{
+					"title": "账单报表",
+					"href": "page/bill-list.html",
+					"icon": "fa fa-bar-chart",
+					"target": "_self"
+				},
+				{
+					"title": "店铺设置",
+					"href": "page/user-setting.html",
+					"icon": "fa fa-snowflake-o",
+					"target": ""
+				}
+			]
+		},
+		{
+			"title": "设置中心",
+			"icon": "fa fa-lemon-o",
+			"href": "",
+			"target": "_self",
+			"child": [{
+				"title": "商家信息",
+				"href": "page/user-setting.html",
+				"icon": "fa fa-dot-circle-o",
+				"target": "_self"
+			}]
+		}
+
+	]
+}

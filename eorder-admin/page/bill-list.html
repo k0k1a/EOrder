@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>账单中心</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <fieldset class="table-search-fieldset">
+            <legend>搜索信息</legend>
+            <div style="margin: 10px 10px 10px 10px">
+                <form class="layui-form layui-form-pane" action="">
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">日期</label>
+                            <div class="layui-input-inline">
+                                <input type="date" name="billDate" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
+                        
+                        <div class="layui-inline">
+                            <button type="submit" class="layui-btn layui-btn-primary"  lay-submit lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </fieldset>
+
+        <script type="text/html" id="toolbarDemo">
+            <div class="layui-btn-container">
+                <button class="layui-btn layui-btn-normal layui-btn-sm data-add-btn" lay-event="excel"> 导出账单</button>、
+            </div>
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/myjs/utils.js"></script>
+<script src="../js/myjs/bill.js"></script>
+<script src="../lib/download/jquery.fileDownload.js"></script>
+
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+
+        table.render({
+            elem: '#currentTableId',
+            url: getRootUrl()+'/bill/list',
+			method:'POST',
+			headers:{
+				token:getToken()
+			},
+			contentType:'application/json',
+			request:{
+				pageName:'pageNo',
+				limitName:'pageSize'
+			},
+			parseData:function(res){
+				return {
+					"code": res.code, //解析接口状态
+					"msg": res.message, //解析提示文本
+					"count": res.data.total, //解析数据长度
+					"data": res.data.data //解析数据列表
+				}
+			},
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [[
+                {field: 'id', width: 80, title: 'ID', sort: true},
+				{field: 'totalOrderAmount', minWidth: 160, title: '订单总金额（元）',align: "center"},
+				{field: 'totalActualAmount', minWidth: 160, title: '实际成交额（元）', align: "center"},
+				{field: 'totalCost', minWidth: 120, title: '总成本（元）', align: "center"},
+				{field: 'netIncome', minWidth: 120, title: '净收入（元）', align: "center"},
+				{field: 'totalNumber', width: 160, title: '总订单数', align: "center"},
+				{field: 'cancelNumber', width: 160, title: '取消订单数', align: "center"},
+				{field: 'billDate', minWidth: 100, title: '日期'}
+            ]],
+            limits: [10, 15, 20, 25, 50, 100],
+            limit: 15,
+            page: true,
+            skin: 'line'
+        });
+
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+			
+			var param=data.field
+            //执行搜索重载
+            table.reload('currentTableId', {
+				url: getRootUrl()+'/bill/search',
+                where: {
+					billDate:param.billDate
+				}
+            }, 'data');
+
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'excel') {  // 监听添加操作
+                doExcel('/bill/excel')
+                
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+            }
+        });
+
+        //监听表格复选框选择
+        table.on('checkbox(currentTableFilter)', function (obj) {
+            console.log(obj)
+        });
+
+        
+
+    });
+</script>
+
+</body>
+</html>

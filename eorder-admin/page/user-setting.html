@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>基本资料</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../css/public.css" media="all">
+	<link rel="stylesheet" href="../css/mycss/mycss.css" media="all" />
+    <style>
+        .layui-form-item .layui-input-company {width: auto;padding-right: 10px;line-height: 38px;}
+    </style>
+</head>
+<body>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+        <div class="layui-form layuimini-form" lay-filter="merchant-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label required">店铺名称</label>
+                <div class="layui-input-block">
+                    <input type="text" name="storeName" lay-verify="required" lay-reqtext="店铺名称不能为空" placeholder="请输入管理账号"  value="admin" class="layui-input">
+                    <tip>填写自己店铺名称的名称。</tip>
+                </div>
+            </div>
+			<div class="layui-form-item" id="area-picker">
+			    <label class="layui-form-label required">店铺地址</label>
+			    <div class="layui-input-inline" style="width: 200px;">
+			        <select id="province" name="province" class="province-selector" lay-verify="required" lay-reqtext="请选择省" data-value="广东省" lay-filter="province-1">
+			            <option value="">请选择省</option>
+			        </select>
+			    </div>
+			    <div class="layui-input-inline" style="width: 200px;">
+			        <select name="city" class="city-selector" lay-verify="required" lay-reqtext="请选择市" data-value="深圳市" lay-filter="city-1">
+			            <option value="">请选择市</option>
+			        </select>
+			    </div>
+			    <div class="layui-input-inline" style="width: 200px;">
+			        <select name="district" class="county-selector" lay-verify="required" lay-reqtext="请选择区" data-value="龙岗区" lay-filter="county-1">
+			            <option value="">请选择区</option>
+			        </select>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">详细地址</label>
+			    <div class="layui-input-block">
+			        <input type="text" name="address" lay-verify="required" lay-reqtext="地址不能为空" placeholder="请输入地址"  value="" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label required">营业时间</label>
+			    <div class="layui-input-inline">
+			        <input type="text" id="businessTime" name="businessTime" lay-verify="required" lay-reqtext="营业时间不能为空" value="9:00 - 21:00" class="layui-input">
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">介绍</label>
+			    <div class="layui-input-block">
+			        <textarea name="description" placeholder="请输入描述内容" class="layui-textarea"></textarea>
+			    </div>
+			</div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">公告</label>
+			    <div class="layui-input-block">
+			        <textarea name="announcement" placeholder="请输入公告内容" class="layui-textarea"></textarea>
+			    </div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+			    <label class="layui-form-label required">店铺头像</label>
+				<img id="header-pic" class="prePicture" src="../images/loginbg.png" />
+			    <div class="layui-input-inline">
+			        <button type="button" name="pic" class="layui-btn" id="merchant-header">
+			          <i class="layui-icon">&#xe67c;</i>上传图片
+			        </button>
+			    </div>
+			</div>
+			<div class="layui-form-item layui-form-text">
+			    <label class="layui-form-label">店铺实景</label>
+				<div id="realPictures"></div>
+			    <div class="layui-input-inline">
+			        <button type="button" name="pic" class="layui-btn" id="merchant-real-pic">
+			          <i class="layui-icon">&#xe67c;</i>上传图片
+			        </button>
+			    </div>
+			</div>
+            <div class="layui-form-item">
+                <label class="layui-form-label required">联系电话</label>
+                <div class="layui-input-block">
+                    <input type="number" name="phone" lay-verify="required" lay-reqtext="联系电话不能为空" placeholder="请输入手机"  value="" class="layui-input">
+                </div>
+            </div>
+			<div class="layui-form-item">
+			    <label class="layui-form-label">自动回复</label>
+			    <div class="layui-input-block">
+			        <input type="checkbox" id="isAutoReply" checked="" name="isAutoReply" lay-skin="switch" lay-filter="switchAutoReply" lay-text="ON|OFF">
+			    </div>
+			</div>
+			<div class="layui-form-item" id="ReplyContent">
+			    <label class="layui-form-label required">内容</label>
+			    <div class="layui-input-block">
+			        <textarea name="autoReplyContent" placeholder="请输入自动回复内容" class="layui-textarea"></textarea>
+			    </div>
+			</div>
+			
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认修改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../js/lay-config.js?v=1.0.4" charset="utf-8"></script>
+<script src="../js/myjs/user-setting.js"></script>
+<script src="../js/myjs/utils.js"></script>
+
+<script>
+    layui.use(['form','miniTab', 'layarea', 'upload', 'laydate'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            miniTab = layui.miniTab,
+			layarea = layui.layarea,
+			upload = layui.upload,
+			laydate = layui.laydate;
+
+		laydate.render({
+			elem: '#businessTime',
+			type: 'time',
+			range: true,
+			format:'HH:mm'
+		});
+		
+		var uploadPics=[]
+		var header='';
+		var isAutoReply='on'
+		
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			var data=data.field;
+			data.headerUrl=header
+			data.realPictures=uploadPics;
+			data.isAutoReply=isAutoReply;
+			if(isAutoReply=='off')
+				delete data.autoReplyContent
+			postData('/merchant/update',JSON.stringify(data));
+			layer.msg('保存成功')
+            return false;
+        });
+		
+		//回显数据
+		var merchant=getData('/merchant/get',null)
+		merchant=merchant.data
+		form.val("merchant-form",{
+			"storeName":merchant.storeName,
+			"province":merchant.province,
+			"city":merchant.city,
+			"district":merchant.district,
+			"address":merchant.address,
+			"phone":merchant.phone,
+			"description":merchant.description,
+			"announcement":merchant.announcement,
+			"businessTime":merchant.businessTime,
+			// "isAutoReply":merchant.isAutoReply,
+			"autoReplyContent":merchant.autoReplyContent
+		})
+		$("[name=province]").attr('data-value',merchant.province)
+		$("[name=city]").attr('data-value',merchant.city)
+		$("[name=district]").attr('data-value',merchant.district)
+		$("#header-pic").attr('src',getServerIPPrefix()+merchant.headerUrl)
+		header=getServerIPPrefix()+merchant.headerUrl
+		isAutoReply=merchant.isAutoReply
+		if(isAutoReply=='off'||isAutoReply==null){
+			isAutoReply='off'
+			$("#ReplyContent").hide()
+		}
+		
+		//回显实景图片
+		merchant.realPictureUrl.forEach(picUrl=>{
+			var img=new Image();
+			img.src=getServerIPPrefix()+picUrl;
+			$(img).addClass('prePicture')
+			$("#realPictures").append(img)
+		})
+		
+		layarea.render({
+		    elem: '#area-picker',
+		    change: function (res) {
+		        //选择结果
+		        // console.log(res);
+		    }
+		});
+		
+		//头像上传
+		var uploadInst = upload.render({
+			elem: '#merchant-header', //绑定元素
+			url: getUploadUrl(), //上传接口
+			headers:{
+				token:getToken()
+			},
+			accept:'images',
+			acceptMime: 'image/*',
+			multiple:true,
+			number:1,
+			size:1024*5,
+			done:function(res){
+				if(res.success){
+					var data=res.data;
+					header=getServerIPPrefix()+data.fileDownloadUri
+					$("#header-pic").attr('src',header)
+				}
+			},
+			allDone:function(obj){
+				if(obj.successful==obj.total){
+					layer.msg("上传成功")
+				}else{
+					layer.msg(obj.aborted+"个上传失败")
+				}
+			},
+			error: function(){
+				//请求异常回调
+				layer.msg('图片上传失败')
+			}
+		});
+		
+		//实景上传
+		var uploadInst = upload.render({
+			elem: '#merchant-real-pic', //绑定元素
+			url: getUploadUrl(), //上传接口
+			headers:{
+				token:getToken()
+			},
+			accept:'images',
+			acceptMime: 'image/*',
+			multiple:true,
+			number:3,
+			size:1024*5,
+			before:function(){
+				uploadPics=[]
+			},
+			done:function(res){
+				if(res.success){
+					var data=res.data;
+					uploadPics.push(data.fileDownloadUri);
+					// header=data.fileDownloadUri
+					// $("#header-pic").attr('src',header)
+				}
+			},
+			allDone:function(obj){
+				if(obj.successful==obj.total){
+					layer.msg("上传成功")
+					$("#realPictures").empty();
+					uploadPics.forEach(picUrl=>{
+						var img=new Image();
+						img.src=getServerIPPrefix()+picUrl;
+						$(img).addClass('prePicture')
+						$("#realPictures").append(img)
+					})
+				}else{
+					layer.msg(obj.aborted+"个上传失败")
+				}
+			},
+			error: function(){
+				//请求异常回调
+				layer.msg('图片上传失败')
+			}
+		});
+		
+		//开关
+		form.on('switch(switchAutoReply)', function (data) {
+			var reply=$("#ReplyContent")
+			if(this.checked){
+				isAutoReply='on'
+				reply.show()
+			}else{
+				isAutoReply='off'
+				reply.hide()
+			}
+		});
+    });
+</script>
+</body>
+</html>

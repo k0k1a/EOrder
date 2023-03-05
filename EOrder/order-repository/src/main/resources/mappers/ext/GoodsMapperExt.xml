@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.ext.GoodsMapperExt">
+
+    <resultMap id="Base_GoodsList_Map" type="com.cdu.lys.graduation.repository.entity.ext.GoodsList">
+        <id column="aid" property="id"/>
+        <result column="type" property="type"/>
+        <result column="a_ct" property="createTime"/>
+        <result column="a_ut" property="updateTime"/>
+        <result column="a_is_delete" property="isDelete"/>
+
+        <collection property="goods" javaType="list" ofType="com.cdu.lys.graduation.repository.entity.ext.Goods"
+                    resultMap="Base_Goods_Map"/>
+    </resultMap>
+
+    <resultMap id="Base_Goods_Map" type="com.cdu.lys.graduation.repository.entity.ext.Goods">
+        <id column="id" property="id"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="description" property="description"/>
+        <result column="ingredients" property="ingredients"/>
+        <result column="weight" property="weight"/>
+        <result column="taste" property="taste"/>
+        <result column="is_meat" property="isMeat"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="sales" property="sales"/>
+        <result column="score" property="score"/>
+        <result column="cost" property="cost"/>
+        <result column="goods_type" property="goodsType"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="is_delete" property="isDelete"/>
+
+        <!--分步查询-->
+        <collection property="pictures" javaType="list" ofType="com.cdu.lys.graduation.repository.entity.GoodsPictureDO"
+                    select="selectPicturesByGoodsId" column="goodsId=id"/>
+
+        <collection property="goodsOptions" javaType="list" ofType="com.cdu.lys.graduation.repository.entity.ext.GoodsOption"
+                    select="selectOptionsByGoodsId" column="goodsId=id"/>
+
+    </resultMap>
+
+    <resultMap id="Base_Option_Map" type="com.cdu.lys.graduation.repository.entity.ext.GoodsOption">
+        <id column="aid" property="id"/>
+        <result column="option_name" property="optionName"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="a_create_time" property="createTime"/>
+        <result column="a_update_time" property="updateTime"/>
+        <result column="a_is_delete" property="isDelete"/>
+
+        <collection property="goodsOptionItems" javaType="list"
+                    ofType="com.cdu.lys.graduation.repository.entity.GoodsOptionItemDO">
+            <id column="bid" property="id"/>
+            <result column="option_item" property="optionItem"/>
+            <result column="option_id" property="optionId"/>
+            <result column="extra_price" property="extraPrice"/>
+            <result column="b_is_delete" property="isDelete"/>
+            <result column="b_create_time" property="createTime"/>
+            <result column="b_update_time" property="updateTime"/>
+        </collection>
+    </resultMap>
+    <update id="decreaseGoodsStockById">
+        UPDATE tb_goods
+        SET stock = stock - #{number},
+            sales = sales + #{number}
+        WHERE
+            id = #{id}
+          AND is_delete='n'
+    </update>
+    <update id="increaseGoodsStockById">
+        UPDATE tb_goods
+        SET stock = stock + #{number},
+            sales = sales - #{number}
+        WHERE
+            id = #{id}
+          AND is_delete='n'
+    </update>
+    <update id="updateScoreByGoodsIds" parameterType="map">
+        UPDATE tb_goods
+        SET score =
+        CASE id
+        <foreach collection="goodsScoreMap" index="key" item="value" close="END">
+            WHEN #{key} THEN #{value}
+        </foreach>
+        WHERE id IN
+        <foreach collection="goodsScoreMap" index="key" open="(" close=")" separator=",">
+            #{key}
+        </foreach>
+    </update>
+
+    <select id="selectGoodsList" parameterType="com.cdu.lys.graduation.repository.dao.ext.query.GoodsListParam" resultMap="Base_GoodsList_Map">
+        SELECT
+        a.id aid,
+        a.type,
+        a.create_time a_ct,
+        a.update_time a_ut,
+        a.is_delete a_is_delete,
+        b.id id,
+        b.goods_name,
+        b.description,
+        b.ingredients,
+        b.weight,
+        b.taste,
+        b.is_meat,
+        b.price,
+        b.stock,
+        b.sales,
+        b.score,
+        b.cost,
+        b.goods_type,
+        b.create_time,
+        b.update_time,
+        b.is_delete
+        FROM
+        tb_goods_type a
+        INNER JOIN tb_goods b ON a.id = b.goods_type
+        WHERE
+        a.is_delete = 'n'
+        AND b.is_delete = 'n'
+        <if test="goodsType != null">
+            AND a.id=#{goodsType}
+        </if>
+        ORDER BY
+        aid
+    </select>
+
+    <select id="selectAllGoodsType" resultMap="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.BaseResultMap">
+        SELECT
+        <include refid="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.Base_Column_List"/>
+        FROM tb_goods_type
+        WHERE is_delete='n'
+    </select>
+
+    <sql id="Base_Goods_list">
+        id, goods_name, description, ingredients, weight, taste, is_meat, price, stock, sales, score, cost, goods_type, create_time, update_time, is_delete
+    </sql>
+
+    <select id="selectByGoodsType" resultMap="Base_Goods_Map">
+        SELECT
+        <include refid="Base_Goods_list"/>
+        FROM
+        tb_goods
+        WHERE
+        is_delete = 'n'
+        AND goods_type =#{goodsType}
+    </select>
+
+    <select id="selectPicturesByGoodsId" resultType="com.cdu.lys.graduation.repository.entity.GoodsPictureDO">
+        SELECT
+            <include refid="com.cdu.lys.graduation.repository.dao.GoodsPictureDOMapper.Base_Column_List"/>
+        FROM
+            tb_goods_picture
+        WHERE
+            goods_id = #{goodsId}
+            AND is_delete = 'n'
+    </select>
+
+    <select id="selectOptionsByGoodsId" resultMap="Base_Option_Map">
+        SELECT a.id          aid,
+               a.option_name,
+               a.goods_id,
+               a.create_time a_create_time,
+               a.update_time a_update_time,
+               a.is_delete   a_is_delete,
+               b.id          bid,
+               b.option_item,
+               b.option_id,
+               b.extra_price,
+               b.is_delete   b_is_delete,
+               b.create_time b_create_time,
+               b.update_time b_update_time
+        FROM tb_goods_option a
+                 INNER JOIN tb_goods_option_item b ON a.id = b.option_id
+        WHERE a.goods_id = #{goodsId}
+          AND a.is_delete = 'n'
+          AND b.is_delete = 'n'
+    </select>
+
+    <select id="selectGoodsById" resultMap="Base_Goods_Map">
+        SELECT
+        <include refid="Base_Goods_list"/>
+        FROM
+        tb_goods
+        WHERE
+        is_delete = 'n'
+        AND id=#{id}
+    </select>
+
+    <select id="selectAllLikeGoodsName" resultMap="Base_Goods_Map">
+        SELECT
+            <include refid="Base_Goods_list"/>
+        FROM
+            tb_goods
+        WHERE
+            is_delete = 'n'
+            AND goods_name LIKE concat( '%', #{goodsName}, '%' )
+            LIMIT 10
+    </select>
+    <select id="selectAllLikeIngredients" resultMap="Base_Goods_Map">
+        SELECT
+        <include refid="Base_Goods_list"/>
+        FROM
+            tb_goods
+        WHERE
+            is_delete = 'n'
+            AND ingredients LIKE concat( '%', #{ingredients}, '%' )
+            LIMIT 10
+    </select>
+
+    <select id="selectAllLikeTaste" resultMap="Base_Goods_Map">
+        SELECT
+        <include refid="Base_Goods_list"/>
+        FROM
+        tb_goods
+        WHERE
+        is_delete = 'n'
+        AND taste LIKE concat( '%', #{ingredients}, '%' )
+    </select>
+
+    <select id="selectHotGoods" resultMap="Base_Goods_Map">
+        SELECT
+        <include refid="Base_Goods_list"/>
+        FROM
+            tb_goods
+        WHERE
+            is_delete = 'n'
+        ORDER BY
+            sales DESC,
+            score DESC
+    </select>
+
+
+</mapper>

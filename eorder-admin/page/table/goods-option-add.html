@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>layui</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" lay-filter="goods-form">
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label">商品id</label>
+		<div class="layui-input-inline">
+			<input type="text" name="id" disabled="disabled" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+			<!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+		<label class="layui-form-label">商品名称</label>
+		<div class="layui-input-inline">
+			<input type="text" name="goodsName" disabled="disabled" lay-verify="required" lay-reqtext="" placeholder="" value="" class="layui-input">
+			<!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+	</div>
+    <div class="layui-form-item">
+		<label class="layui-form-label required">规格名称</label>
+		<div class="layui-input-inline">
+			<input type="text" name="optionName" lay-verify="required" lay-reqtext="商品名称不能为空" placeholder="请输入商品名称" value="" class="layui-input">
+			<!-- <tip>填写自己管理账号的名称。</tip> -->
+		</div>
+    </div>
+	<div class="layui-form-item">
+		<label class="layui-form-label required">规格选项</label>
+		<div class="layui-input-inline">
+			<input type="text" name="optionItem1" lay-verify="required" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+		<label class="layui-form-label">额外价格</label>
+		<div class="layui-input-inline">
+			<input type="number" name="extraPrice1" lay-verify="number" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+	</div>
+    
+	<div class="layui-form-item">
+		<label class="layui-form-label required">规格选项</label>
+		<div class="layui-input-inline">
+			<input type="text" name="optionItem2" lay-verify="required" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+		<label class="layui-form-label">额外价格</label>
+		<div class="layui-input-inline">
+			<input type="number" name="extraPrice2" lay-verify="" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+	</div>
+	
+	<div class="layui-form-item">
+		<label class="layui-form-label required">规格选项</label>
+		<div class="layui-input-inline">
+			<input type="text" name="optionItem3" lay-verify="" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+		<label class="layui-form-label">额外价格</label>
+		<div class="layui-input-inline">
+			<input type="number" name="extraPrice3" lay-verify="" lay-reqtext="至少输入两个规格选项" placeholder="请输入商品名称" value="" class="layui-input">
+		</div>
+	</div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认保存</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+<script src="../../js/myjs/goods-add.js" charset="utf-8"></script>
+
+<script>
+    layui.use(['form','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+			upload = layui.upload;
+
+		var goods=layui.sessionData('goods-option-add')
+		goods=goods.goods;
+		
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			
+			var data=data.field;
+			
+			var req={};
+			req.goodsId=data.id;
+			req.optionName=data.optionName;
+			var optionItems=[
+				{
+					optionItem:data.optionItem1,
+					extraPrice:data.extraPrice1
+				},
+				{
+					optionItem:data.optionItem2,
+					extraPrice:data.extraPrice2
+				},
+				{
+					optionItem:data.optionItem3==''?null:data.optionItem3,
+					extraPrice:data.extraPrice3==''?null:data.extraPrice3
+				}
+			]
+			
+			req.optionItems=optionItems;
+			postData('/goods/option/add',JSON.stringify(req));
+			layer.msg('保存成功')
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+				layui.sessionData('upload',null)
+			},1000)
+			
+			
+            return false;
+        });
+		
+		//表单数据回显，可以用Ajax请求，成功后回调回显
+		form.val("goods-form",{
+			"id":goods.goodsId,
+			"goodsName":goods.goodsName
+		})
+
+    });
+	
+	
+</script>
+</body>
+</html>

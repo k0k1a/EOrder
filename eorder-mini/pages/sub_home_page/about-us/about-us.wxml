@@ -1,0 +1,44 @@
+<view class="container">
+    <view class="list">
+        <view class="list-item icon">
+            <image src="/img/icon/dianpu.png"></image>
+        </view>
+        <view class="list-item title">店铺名称：</view>
+        <view class="list-item content">{{merchant.storeName}}</view>
+    </view>
+    <view class="list" bindtap="handleAddressTap">
+        <view class="list-item icon">
+            <image src="/img/icon/shouhuodizhi.png"></image>
+        </view>
+        <view class="list-item title">地址：</view>
+        <view class="list-item content">{{merchant.province+merchant.city+merchant.district+merchant.address}}</view>
+    </view>
+    <view class="list">
+        <block wx:for="{{merchant.realPictureUrl}}" wx:for-item="picUrl" wx:key="*this">
+            <view class="real-pic">
+                <image src="{{serverPrefix+picUrl}}"></image>
+            </view>
+        </block>
+    </view>
+    <view class="list">
+        <view class="list-item icon">
+            <image src="/img/icon/31dianhua.png"></image>
+        </view>
+        <view class="list-item title">联系电话：</view>
+        <view class="list-item content">{{merchant.phone}}</view>
+    </view>
+    <view class="list">
+        <view class="list-item icon">
+            <image src="/img/icon/shijian.png"></image>
+        </view>
+        <view class="list-item title">营业时间：</view>
+        <view class="list-item content">{{merchant.businessTime}}</view>
+    </view>
+    <view class="list">
+        <view class="list-item icon">
+            <image src="/img/icon/gonggao.png"></image>
+        </view>
+        <view class="list-item title">商家公告：</view>
+        <view class="list-item content">{{merchant.announcement}}</view>
+    </view>
+</view>

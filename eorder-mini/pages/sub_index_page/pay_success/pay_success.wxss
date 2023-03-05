@@ -1,0 +1,43 @@
+/* pages/pay_success/pay_success.wxss */
+/* @import '../../style/weui.wxss'; */
+
+.container icon{
+  /* margin-top:136rpx; */
+
+  margin: 100rpx auto;
+  
+}
+.success{
+  margin: 100rpx 225rpx 50rpx 225rpx;
+  width: 300rpx;
+  height: 300rpx;
+
+}
+image{
+  width: 100%;
+  height: 100%;
+}
+.tip_txt{
+  color: #888888;
+  font-size: 42rpx;
+  text-align:center ;
+}
+.tip_sum{
+  color: #333;
+  font-size: 80rpx;
+  text-align:center ;
+  font-weight: bold;
+  margin-top: 50rpx;
+}
+ .ensure{
+    width:85%;
+    height:80rpx;
+    margin: 0 auto;
+    background:var(--themeColor);
+    font-size: 30rpx;
+    color: #fff;
+    text-align: center;
+    line-height: 80rpx;
+    border-radius: 5rpx;
+    margin-top:100rpx;
+}

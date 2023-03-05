@@ -1,0 +1,61 @@
+<view class="order-bar">
+    <view class="order-title" bindtap="handleTitleTap" data-index="0">
+        <view class="order-title-text">待领取</view>
+        <view wx:if="{{tabIndex==0}}" class="select-bar">
+        </view>
+        
+    </view>
+    <view class="order-title" bindtap="handleTitleTap" data-index="1">
+        <view class="order-title-text">可使用</view>
+        <view wx:if="{{tabIndex==1}}" class="select-bar">
+        </view>
+    </view>
+    <view class="order-title" bindtap="handleTitleTap" data-index="2">
+        <view class="order-title-text">已失效</view>
+        <view wx:if="{{tabIndex==2}}" class="select-bar">
+        </view>
+    </view>
+</view>
+
+<view wx:if="{{tabIndex == 0}}" class="coupons-container">
+  <view wx:if="{{coupon.data.length==0}}" class="empty">
+    <view class="nodata">
+      <image src="/img/icon/no-data.png"></image>
+      <text class="desc">暂无数据</text>
+    </view>
+  </view>
+
+  <view class="list" wx:for="{{coupon.data}}" wx:key="id" bindtap="handleCouponTap" data-id="{{item.id}}">
+    <view class="l">
+      <view class="price"><text>¥</text>{{item.reduce}}</view>
+      <view class="hreshold">满{{item.reach}}元可用</view>
+    </view>
+    <view class="r">
+      <view class="name">{{item.couponName}}</view>
+      <view wx:if="{{item.effectiveTime}}" class="times">领取后{{item.effectiveTime}}天内使用</view>
+      <view wx:if="{{item.deadline}}" class="times">截止时间{{item.deadline}}</view>
+    </view>
+  </view>
+
+</view>
+
+<view wx:if="{{tabIndex != 0}}" class="coupons-container">
+  <view wx:if="{{myCoupon.data.length<=0}}" class="empty">
+    <view class="nodata">
+      <image src="/img/icon/no-data.png"></image>
+      <text class="desc">暂无数据</text>
+    </view>
+  </view>
+
+  <view class="list" wx:for="{{myCoupon.data}}" wx:key="id" data-id="{{item.id}}">
+    <view class="l">
+      <view class="price"><text>¥</text>{{item.reduce}}</view>
+      <view class="hreshold">满{{item.reach}}元可用</view>
+    </view>
+    <view class="r">
+      <view wx:if="{{item.couponName}}" class="name">{{item.couponName}}</view>
+      <view wx:if="{{item.expireTime}}" class="times">限{{item.expireTime}}前使用</view>
+    </view>
+  </view>
+
+</view>

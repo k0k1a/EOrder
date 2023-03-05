@@ -1,0 +1,21 @@
+<view class="modify-form">
+
+    <form bindsubmit="formSubmit">
+        <view class="label-list label-lists">
+            <view class="label">头像</view>
+            <image wx:if="{{isUpload}}" src="{{serverPrefix+uploadImg}}" bindtap="uploadFn"></image>
+            <image wx:if="{{!isUpload}}" src="{{header}}" bindtap="uploadFn"></image>
+        </view>
+        <view class="label-list">
+            <view class="label">昵称</view>
+            <input placeholder="请输入您的昵称" placeholder-class="place" name="name" value="{{nickname}}" bindinput="handleName" />
+        </view>
+
+        <view class="label-list">
+            <view class="label">手机号</view>
+            <input value="{{phone}}" placeholder-class="place" bindinput="handlePhone" />
+        </view>
+
+        <view class="submit" bindtap="formSubmit">修改</view>
+    </form>
+</view>

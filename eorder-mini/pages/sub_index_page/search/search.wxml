@@ -1,0 +1,72 @@
+<view class="search_input_bgc">
+    <view class="search_input">
+        <input class="navi float-left" type="text" placeholder="搜索" bindinput="handleInput"></input>
+        <image class="pic float-left" src="/img/icon/search.png" bindtap="handleSearchTap"></image>
+        <!-- <text>搜索</text> -->
+        <text class="cancle float-right" bindtap="handleCancleTap">取消</text>
+    </view>
+</view>
+
+<!-- 搜索结果 -->
+<view wx:if="{{goodsList.length>0}}" class="search-title">搜索结果</view>
+<view class="goods" wx:for="{{goodsList}}" wx:key="id" wx:for-item="goods">
+    <view class="goods_img float-left">
+        <navigator class="all" url="/pages/sub_index_page/goods_info/goods_info?goodsId={{goods.id}}">
+            <image src="{{serverPrefix+goods.pictures[0].picUrl}}"></image>
+        </navigator>
+    </view>
+
+    <view class="goods_name goods_item float-left" bindtap="handle2GoodsInfo" data-goods-id="{{goods.id}}">{{goods.goodsName}}</view>
+    <view class="goods_desc goods_item float-left">{{goods.desc}}</view>
+    <view class="goods_number goods_item float-left">月售 {{goods.sales}} 评分 {{goods.score}}</view>
+
+    <view class="goods_action goods_item float-left">
+        <view class="action_price float-left">
+            <block>￥{{goods.price}}</block>
+        </view>
+        <!-- <view class="num_action float-right">
+            <image class="reduce {{cart.num==0 ? 'hidden' : ''}}" src="/img/icon/reduce.png" bindtap="handleReduceTap" data-goods-id="{{cart.goodsId}}"></image>
+            <text class="order_num {{cart.num==0 ? 'hidden' : ''}}">{{cart.num}}</text>
+            <image class="add" src="/img/icon/add.png" bindtap="handleAddCartGoodsTap" data-goods-id="{{cart.goodsId}}"></image>
+        </view> -->
+    </view>
+</view>
+
+<!-- 暂无数据 -->
+<view wx:if="{{result&&goodsList.length==0}}" class="empty">
+    <view class="nodata">
+      <image src="/img/icon/no-data.png"></image>
+      <text class="desc">暂无数据</text>
+    </view>
+</view>
+
+<view wx:if="{{!result&&topList.length>0}}" class="hot-list">
+    <view class="hot-title">热门搜索</view>
+    <block wx:for="{{topList}}" wx:key="index">
+        <view class="hot-item float-left" bindtap="reSearch" data-value="{{item}}">{{item}}</view>
+    </block>
+</view>
+
+
+<!-- 搜索历史 -->
+<view wx:if="{{historyShow}}" class="search-history">
+    <view wx:for="{{showHistoryList}}" wx:key="index" class="history-list">
+        <view class="time-icon float-left">
+            <image src="/img/icon/time.png"></image>
+        </view>
+        <view class="history-text float-left" bindtap="reSearch" data-value="{{item}}">
+            {{item}}
+        </view>
+        <view class="delete float-right" bindtap="removeHistory" data-index="{{index}}">
+            <image src="/img/icon/cha.png"></image>
+        </view>
+    </view>
+    
+    <view wx:if="{{showAll&&historyShow}}" class="all-history" bindtap="setAllShowHistoryList">
+        全部搜索记录
+    </view>
+    
+    <view wx:if="{{!showAll&&historyShow}}" class="all-history" bindtap="clearAll">
+        清除所有记录
+    </view>
+</view>

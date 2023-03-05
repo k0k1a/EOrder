@@ -1,0 +1,7 @@
+<view class="search_input">
+    
+    <navigator class="navi" url="{{searchUrl}}">
+        <image class="pic" src="/img/icon/search.png"></image>
+    搜索
+    </navigator>
+</view>

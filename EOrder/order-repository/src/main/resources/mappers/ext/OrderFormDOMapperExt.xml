@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.ext.OrderFormDOMapperExt" >
+
+    <resultMap id="Base_OrderDetail_Map" type="com.cdu.lys.graduation.repository.entity.ext.OrderDetailDO">
+        <id column="aid" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="user_coupon_id" property="userCouponId"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="trade_status" property="tradeStatus"/>
+        <result column="pay_status" property="payStatus"/>
+        <result column="create_time" property="createTime"/>
+        <result column="expire_time" property="expireTime"/>
+        <result column="close_time" property="closeTime"/>
+        <result column="remark" property="remark"/>
+        <result column="order_amount" property="orderAmount"/>
+        <result column="pay_amount" property="payAmount"/>
+        <result column="coupon_amount" property="couponAmount"/>
+        <result column="pay_time" property="payTime"/>
+        <result column="outer_trade_no" property="outerTradeNo"/>
+        <result column="queue_num" property="queueNum"/>
+        <result column="delivery_status" property="deliveryStatus"/>
+        <result column="is_comment" property="isComment"/>
+        <result column="comment_time" property="commentTime"/>
+
+        <collection property="orderFormInfoDOList" javaType="list" ofType="com.cdu.lys.graduation.repository.entity.OrderFormInfoDO">
+            <id column="bid" property="id"/>
+            <result column="order_id" property="orderId"/>
+            <result column="order_num" property="orderNum"/>
+            <result column="goods_id" property="goodsId"/>
+            <result column="goods_pic" property="goodsPic"/>
+            <result column="goods_name" property="goodsName"/>
+            <result column="goods_price" property="goodsPrice"/>
+            <result column="goods_quantity" property="goodsQuantity"/>
+            <result column="extra_price" property="extraPrice"/>
+            <result column="extra_options" property="extraOptions"/>
+        </collection>
+    </resultMap>
+
+    <select id="selectOrderDetailList" resultMap="Base_OrderDetail_Map">
+        SELECT
+            a.id aid,
+            a.user_id,
+            a.user_coupon_id,
+            a.order_num,
+            a.trade_status,
+            a.pay_status,
+            a.create_time,
+            a.expire_time,
+            a.close_time,
+            a.remark,
+            a.order_amount,
+            a.pay_amount,
+            a.coupon_amount,
+            a.pay_time,
+            a.outer_trade_no,
+            a.queue_num,
+            a.delivery_status,
+            a.is_comment,
+            a.comment_time,
+            b.id bid,
+            b.order_id,
+            b.order_num b_order_num,
+            b.goods_id,
+            b.goods_pic,
+            b.goods_name,
+            b.goods_price,
+            b.goods_quantity,
+            b.extra_price,
+            b.extra_options
+        FROM
+            tb_order_form a
+            INNER JOIN tb_order_form_info b ON a.order_num = b.order_num
+        WHERE
+            user_id = #{userId}
+        ORDER BY
+            create_time DESC,
+            aid DESC
+    </select>
+    <select id="selectUserNoCommentsOrderList" resultMap="Base_OrderDetail_Map">
+        SELECT
+            a.id aid,
+            a.user_id,
+            a.user_coupon_id,
+            a.order_num,
+            a.trade_status,
+            a.pay_status,
+            a.create_time,
+            a.expire_time,
+            a.close_time,
+            a.remark,
+            a.order_amount,
+            a.pay_amount,
+            a.coupon_amount,
+            a.pay_time,
+            a.outer_trade_no,
+            a.queue_num,
+            a.delivery_status,
+            a.is_comment,
+            a.comment_time,
+            b.id bid,
+            b.order_id,
+            b.order_num b_order_num,
+            b.goods_id,
+            b.goods_pic,
+            b.goods_name,
+            b.goods_price,
+            b.goods_quantity,
+            b.extra_price,
+            b.extra_options
+        FROM
+            tb_order_form a
+                INNER JOIN tb_order_form_info b ON a.order_num = b.order_num
+        WHERE
+            user_id = #{userId}
+            AND trade_status=2
+            AND is_comment='n'
+        ORDER BY
+            create_time DESC,
+            aid DESC
+    </select>
+</mapper>

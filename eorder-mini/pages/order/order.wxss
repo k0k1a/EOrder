@@ -1,0 +1,139 @@
+page{
+    height: 100%;
+}
+image{
+    width: 100%;
+    height: 100%;
+}
+.float-left{
+    float: left;
+}
+.float-right{
+    float: right;
+}
+
+.order-container{
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f5f5f5;
+}
+.order-container .order-bar{
+    height: 10vh;
+    display: flex;
+    background-color: #ffffff;
+}
+.order-bar .order-title{
+    flex: 1;
+}
+.order-title .order-title-text{
+    margin: 0 auto;
+    width: 80%;
+    height: 90rpx;
+    text-align: center;
+    font-size: 35rpx;
+    line-height: 100rpx;
+    /* border: 1rpx solid black; */
+}
+.order-title .select-bar{
+    width: 50rpx;
+    height: 10rpx;
+    background-color: var(--themeColor);
+    border-radius: 5rpx;
+    position: relative;
+    top: 0;
+    left: 100rpx;
+}
+
+/* 内容 */
+.order-list-container{
+    /* margin: 15rpx 0 0 0; */
+    height: 90vh;
+}
+.order-list{
+    overflow: hidden;
+    margin: 10rpx 0 10rpx 0;
+    padding: 15rpx 15rpx;
+    background-color: #ffffff;
+    /* height: 100rpx; */
+}
+.order-list .order-status{
+    height: 50rpx;
+    font-size: 30rpx;
+    color: #888888;
+}
+.order-list .order-info{
+    /* height: 300rpx; */
+    width: 100%;
+    overflow: hidden;
+}
+.order-info .order-pic-container{
+    overflow: hidden;
+    white-space: nowrap;
+}
+.order-info .scroll-order-pics{
+    height: 100rpx;
+    overflow: hidden;
+}
+.pics-container{
+    width: 100%;
+    height: 100rpx;
+    overflow: hidden;
+}
+.scroll-order-pics .order-goods-pic{
+    width: 100rpx;
+    height: 100rpx;
+    margin: 0 8rpx;
+    display: inline-block;
+}
+.order-info .order-item{
+    width: 100%;
+    margin: 10rpx 0 0 0;
+    font-size: 25rpx;
+    color: #888888;
+}
+.order-info .order-price{
+    font-size: 40rpx;
+    color: red;
+}
+
+.order-list .order-option{
+    overflow: hidden;
+}
+.order-option .order-option-item{
+    margin: 10rpx 5rpx;
+    width: 150rpx;
+    height: 60rpx;
+    font-size: 30rpx;
+    text-align: center;
+    line-height: 56rpx;
+    border-radius: 30rpx;
+}
+.order-option .order-pay-now{
+    border: 1rpx solid #1AAD19;
+    color: #1AAD19;
+}
+.order-option .order-delete {
+    border: 1rpx solid red;
+    color: red;
+}
+.order-option .order-close{
+    border: 1rpx solid orange;
+    color: orange;
+}
+.order-option .order-one-comment{
+    border: 1rpx solid #888888;
+    color: #888888;
+}
+.order-option .order-one-more{
+    border: 1rpx solid var(--themeColor);
+    color: var(--themeColor);
+}
+.bottom{
+    width: auto;
+    height: 30rpx;
+    line-height: 30rpx;
+    font-size: 25rpx;
+    color: #999999;
+    text-align: center;
+}

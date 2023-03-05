@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EOrder/EOrder.iml" filepath="$PROJECT_DIR$/EOrder/EOrder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-commons/order-commons.iml" filepath="$PROJECT_DIR$/EOrder/order-commons/order-commons.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-domain/order-domain.iml" filepath="$PROJECT_DIR$/EOrder/order-domain/order-domain.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-repository/order-repository.iml" filepath="$PROJECT_DIR$/EOrder/order-repository/order-repository.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-service/order-service.iml" filepath="$PROJECT_DIR$/EOrder/order-service/order-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-start/order-start.iml" filepath="$PROJECT_DIR$/EOrder/order-start/order-start.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-test/order-test.iml" filepath="$PROJECT_DIR$/EOrder/order-test/order-test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EOrder/order-type/order-type.iml" filepath="$PROJECT_DIR$/EOrder/order-type/order-type.iml" />
+    </modules>
+  </component>
+</project>

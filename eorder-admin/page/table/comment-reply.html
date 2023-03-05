@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>回复</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../../lib/layui-v2.6.3/css/layui.css" media="all">
+    <link rel="stylesheet" href="../../css/public.css" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form" lay-filter="goods-form">
+	<div class="layui-form-item">
+		<label class="layui-form-label">id</label>
+		<div class="layui-input-inline">
+			<input type="number" name="id" disabled="disabled" lay-verify="required" class="layui-input">
+		</div>
+	</div>
+    <div class="layui-form-item">
+    	<label class="layui-form-label">用户评论</label>
+    	<div class="layui-input-block">
+    		<textarea name="content" disabled="disabled" class="layui-textarea"></textarea>
+    	</div>
+    </div>
+    <div class="layui-form-item">
+    	<label class="layui-form-label required">回复</label>
+    	<div class="layui-input-block">
+			<textarea name="reply" placeholder="请输入回复信息" class="layui-textarea"></textarea>
+    	</div>
+    </div>
+
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button id="save" class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">确认提交</button>
+        </div>
+    </div>
+</div>
+</div>
+<script src="../../lib/layui-v2.6.3/layui.js" charset="utf-8"></script>
+<script src="../../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="../../js/myjs/utils.js"></script>
+
+<script>
+
+    layui.use(['form','upload'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+            $ = layui.$,
+			upload = layui.upload;
+
+		var comment=layui.sessionData('comment-reply')
+		comment=comment.comment
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+			
+			//点击保存
+			var data=data.field;
+			data.id=comment.id
+			postData('/comment/reply',JSON.stringify(data));
+			layer.msg('回复成功')
+			setTimeout(function(){
+				var iframeIndex = parent.layer.getFrameIndex(window.name);
+				parent.layer.close(iframeIndex);
+			},1000)
+            return false;
+        });
+
+		//数据回显	
+		
+		form.val("goods-form",{
+			"id":comment.id,
+			"content":comment.content
+		})
+		
+		
+		
+    });
+	
+
+	
+	
+</script>
+</body>
+</html>

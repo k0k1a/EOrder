@@ -1,0 +1,23 @@
+.search_input {
+    width: 105rpx;
+    height: 40rpx;
+    overflow: hidden;
+}
+.search_input .pic{
+  width: 30rpx;
+  height: 30rpx;
+  margin-right: 5rpx;
+  /* float: left; */
+}
+.search_input .navi {
+    width: 105rpx;
+    height: 40rpx;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(228, 226, 226);
+    font-size: 22rpx;
+    border-radius: 40rpx;
+    color: black;
+  }
+  

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.cdu.lys.graduation.repository.dao.ext.GoodsTypeDOMapperExt" >
+    <select id="selectAllGoodsType" resultMap="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.BaseResultMap">
+        SELECT
+        <include refid="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.Base_Column_List"/>
+        FROM tb_goods_type
+        WHERE is_delete='n'
+    </select>
+
+    <select id="selectTypeLikeValue" resultMap="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.BaseResultMap">
+        SELECT
+        <include refid="com.cdu.lys.graduation.repository.dao.GoodsTypeDOMapper.Base_Column_List"/>
+        FROM tb_goods_type
+        WHERE type LIKE concat('%',#{value},'%') AND is_delete='n'
+    </select>
+</mapper>

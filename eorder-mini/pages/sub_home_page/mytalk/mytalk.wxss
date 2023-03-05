@@ -1,0 +1,117 @@
+.container{
+  width: 100%;
+  height: 100%;
+  background-color: #f9f9f9;
+}
+/* 评论列表 */
+.comment-cotent{
+  /* overflow: hidden; */
+}
+.comment-item{
+  margin: 20rpx 0;
+  padding: 20rpx 30rpx;
+  background-color: #ffffff;
+}
+.comment .comment-cotent .user-comment{
+  width: auto;
+  /* height: 300rpx; */
+  /* 不设置高度，自动高度 */
+  /* overflow: hidden; */
+}
+.comment-cotent .user-comment .user-comment-title{
+  width: auto;
+  height: 100rpx;
+  /* background-color: #888888; */
+}
+.user-comment .user-comment-title .user-pic{
+  width: 100rpx;
+  height: 100rpx;
+}
+.user-pic .user-pic-img{
+  border-radius: 50rpx;
+}
+.user-comment .user-comment-title .user-title-mid{
+  width: 300rpx;
+  height: 100rpx;
+  padding: 0rpx 20rpx;
+}
+.user-comment-title .user-title-mid .user-name,.user-comment-score{
+  margin: 5rpx;
+}
+.user-comment-title .user-title-mid .user-name{
+  font-size: 30rpx;
+  font-weight: 540;
+}
+.user-comment-score{
+  font-size: 22rpx;
+  color: #777777;
+}
+.star{
+  width: 20rpx;
+  height: 20rpx;
+  margin: 0 3rpx;
+}
+.user-comment .user-comment-title .user-comment-date{
+  width: 250rpx;
+  height: 100rpx;
+  /* line-height: 100rpx; */
+  font-size: 25rpx;
+  text-align: right;
+  color: #888888;
+}
+.user-comment-content{
+
+}
+.user-comment-text{
+  padding: 15rpx 0rpx;
+  font-size: 25rpx;
+}
+.user-comment-pics{
+  margin: 20rpx 0 0 0;
+  width: 100%;
+}
+.user-comment-pics image{
+  margin: 0 20rpx 0 0;
+  width: 150rpx;
+  height: 150rpx;
+  border-radius: 5rpx;
+}
+
+.user-comment-reply{
+  padding: 15rpx 0rpx;
+  font-size: 25rpx;
+  background-color: #f5f5f5;
+}
+.bottom{
+  width: auto;
+  height: 30rpx;
+  line-height: 30rpx;
+  font-size: 25rpx;
+  color: #999999;
+  text-align: center;
+}
+
+
+.empty{
+  width:300rpx;
+  height:300rpx;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+ text-align: center;
+}
+.empty image{
+  display: block;
+  width: 110rpx;
+  height: 100rpx;
+  margin: 30rpx auto;
+}
+.empty text{
+  display: block;
+  text-align: center;
+  color: #666;
+  font-size: 26rpx;
+}

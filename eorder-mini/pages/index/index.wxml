@@ -1,0 +1,329 @@
+<view class="cates">
+    <view class="seller">
+        <!-- 商户信息 -->
+        <view class="seller_info">
+            <!-- 商家头像 -->
+            <view class="header">
+                <image class="header_img" src="{{serverPrefix+merchant.headerUrl}}"></image>
+            </view>
+
+            <view class="name" bindtap="handle2AboutUs">
+                <text>{{merchant.storeName}}</text>
+                <image src="/img/icon/toright.png"></image>
+            </view>
+            <view class="score">
+                <text>评分 {{merchant.score}} | 放心吃</text>
+            </view>
+            <view class="announcement" bindtap="handle2AboutUs">
+                <text>公告：{{merchant.announcement}}</text>
+            </view>
+
+            <!-- 优惠券条 -->
+            <scroll-view scroll-x class="scroll_discount">
+                <view class="discount">
+                    <block wx:for="{{coupon.data}}" wx:key="id">
+                        <discount upto="{{item.reach}}" down="{{item.reduce}}" bindtap="handleCouponTap"></discount>
+                    </block>
+                </view>
+            </scroll-view>
+        </view>
+
+    </view>
+
+    <view class="sale_block">
+        <!-- 点菜/评价栏/搜索-->
+        <view class="order_bar">
+            <!-- 左 -->
+            <view class="left_bar">
+                <view class="title {{index===currentTitleIdx?'title_selected':''}}" wx:for="{{titles}}" wx:key="*this" bindtap="handleTitleTap" data-index="{{index}}">
+                    <text>{{item}}</text>
+                </view>
+            </view>
+
+            <!-- 右 -->
+            <view class="right_bar">
+                <searchInput searchUrl="/pages/sub_index_page/search/search"></searchInput>
+            </view>
+        </view>
+
+        <view class="cates_container">
+            <swiper class="cates_swiper" current="{{currentTitleIdx}}" bindchange="handleSwiperChange">
+                <!-- 菜单 -->
+                <swiper-item class="cates_swiper_item">
+                    <!-- 左侧菜单 -->
+                    <scroll-view class="left_menu" scroll-y="true">
+                        <view class="menu_item {{-3===currentIdx?'active':''}}" bindtap="handleItemTap" data-index="{{-3}}">
+                            推荐
+                        </view>
+                        <view class="menu_item {{-2===currentIdx?'active':''}}" bindtap="handleItemTap"  data-index="{{-2}}">
+                            全部商品
+                        </view>
+                        <view class="menu_item {{-1===currentIdx?'active':''}}" bindtap="handleItemTap" data-index="{{-1}}">
+                            热门商品
+                        </view>
+                        <block  wx:for="{{leftMenuList}}" wx:key="id" >
+                            <view class="menu_item {{index===currentIdx?'active':''}}" bindtap="handleItemTap" data-index="{{index}}" data-type-id="{{item.id}}">
+                                {{item.type}}
+                            </view>
+                        </block>
+                        <!-- 空白占位 -->
+                        <view style="width: auto;height: 8vh;"></view>
+                    </scroll-view>
+
+                    <!-- 右侧商品内容 -->
+                    <scroll-view class="right_content" scroll-y="true" bindscrolltolower="handleToBottom">
+                        <view wx:for="{{goodsList.data}}" class="goods_group" wx:key="id">
+                            <view wx:if="{{item.goods.length!=0}}" class="goods_title">
+                                <text>{{item.type}}</text>
+                            </view>
+
+                            <view wx:if="{{item.goods.length!=0}}" wx:for="{{item.goods}}" wx:key="id" wx:for-item="goods" class="goods_list">
+                                <view class="goods_img">
+                                    <navigator url="/pages/sub_index_page/goods_info/goods_info?goodsId={{goods.id}}">
+                                        <!-- 商品图片判断 -->
+                                        <block wx:if="{{goods.pictures[0].picUrl!=null}}">
+                                            <image src="{{serverPrefix+goods.pictures[0].picUrl}}"></image>
+                                        </block>
+                                    </navigator>
+                                </view>
+
+                                <view class="goods_name" bindtap="navigate2GoodsInfo" data-goods-id="{{goods.id}}">{{goods.goodsName}}</view>
+                                <view class="goods_info">{{goods.desc}}</view>
+                                <view class="goods_item">
+                                    <view class="sale_num">月售 <block>{{goods.sales}}</block>
+                                    </view>
+                                    <view class="like_num">评分 <block>{{goods.score}}</block></view>
+                                </view>
+                                <view class="action_bar">
+                                    <view class="goods_price">
+                                        <block>￥</block>{{goods.price}}起
+                                    </view>
+                                    <view class="goods_action">
+                                        <block wx:if="{{goods.goodsOptions.length==0}}">
+                                            <block wx:for="{{cartList}}" wx:key="goodsId">
+                                                <block wx:if="{{item.goodsId==goods.id}}">
+                                                    <image class="reduce {{item.num==0 ? 'hidden' : ''}}" src="/img/icon/reduce.png" bindtap="handleReduceTap" data-goods-id="{{goods.id}}"/>
+                                                    <text class="order_num {{item.num==0 ? 'hidden' : ''}}">{{item.num}}</text>
+                                                </block>
+                                            </block>
+                                            <image class="add" src="/img/icon/add.png" bindtap="handleAddTap" data-goods="{{goods}}"/>
+                                        </block>
+                                        <block wx:if="{{goods.goodsOptions.length!=0}}">
+                                            <view class="select_options" bindtap="handleGoodsInfoShow" data-goodsId="{{goods.id}}">
+                                                选规格
+                                            </view>
+                                        </block>
+                                    </view>
+                                </view>
+                            </view>
+                        </view>
+                        <!-- 空白占位 -->
+                        <view style="width: auto;height: 8vh;"></view>
+                    </scroll-view>
+                </swiper-item>
+
+                <!-- 评价 -->
+                <swiper-item class="cates_swiper_item">
+                    <scroll-view class="comment-scroll-view" scroll-y="true" bindscrolltolower="handleToCommentBottom">
+                        <view class="comment">
+                            <view class="comment_item comment-score">
+                                <text style="font-size: 30rpx;color: black;">商家评分：</text>
+                                {{merchant.score}}
+                            </view>
+
+                            <view class="comment_item sort_type">
+                            <block wx:for="{{commentSearchType}}" wx:for-item="type" wx:key="index">
+                                <view class="comment-type {{type.select ? 'type-selected' :''}} float-left" bindtap="handleCommentTap" data-index="{{index}}">{{type.name}}</view>
+                            </block>
+                                
+                                
+                            </view>
+
+                            <view class="comment-cotent">
+                                <block wx:for="{{commentList.data}}" wx:for-item="comment" wx:key="id">
+                                    <view class="comment_item user-comment">
+                                        <view class="user-comment-title">
+                                            <view class="user-pic float-left">
+                                                <block wx:if="{{!comment.avatarUrl}}">
+                                                    <image class="user-pic-img" src="/img/icon/default_header.png"></image>
+                                                </block>
+                                                <block wx:if="{{comment.avatarUrl}}">
+                                                    <image class="user-pic-img" src="{{comment.avatarUrl}}"></image>
+                                                </block>
+                                            </view>
+
+                                            <view class="user-title-mid float-left">
+                                                <view class="user-name">
+                                                    {{comment.nickName}}
+                                                </view>
+                                                <view class="user-comment-score">
+                                                    <!-- <image class="star" src="/img/icon/star-1.png"></image>-->
+                                                    环境:{{comment.environmentScore}} 味道:{{comment.tasteScore}} 服务:{{comment.serviceScore}}
+                                                </view>
+                                            </view>
+                                            <!-- 时间 -->
+                                            <view class="user-comment-date float-left">
+                                                {{comment.createTime}}
+                                            </view>
+                                        </view>
+
+                                        <view class="user-comment-content">
+                                            <view class="user-comment-text">
+                                                {{comment.content}}
+                                            </view>
+                                            <view class="user-comment-pics">
+                                                <block wx:for="{{comment.picUrls}}" wx:for-item="pic" wx:key="*this">
+                                                    <image  src="{{serverPrefix+pic.picUrl}}"></image>
+                                                </block>
+                                            </view>
+                                            <view wx:if="{{comment.reply}}" class="user-comment-reply">
+                                                商家回复：{{comment.reply}}
+                                            </view>
+                                        </view>
+                                    </view>
+                                </block>
+                            
+                            </view>
+                        </view>
+                        <view class="bottom" wx:if="{{reachedBottom}}">我也是有底线的哦</view>
+                    </scroll-view>
+                </swiper-item>
+
+            </swiper>
+
+        </view>
+    </view>
+
+</view>
+
+
+<view class="mask-layer" wx:if="{{goodsInfoShowState}}" catchtap="handleGoodsInfoHide">
+</view>
+<!-- 选规格弹出 -->
+<view class="select_view" wx:if="{{goodsInfoShowState}}"  animation="{{animationData}}">
+    <view class="selected_goods">
+        <view class="selected_goods_img float-left">
+            <!-- <image id="goods_info_img" src="{{staticUrl+goods.pictures[0].picUrl}}"></image> -->
+            <!-- 商品图片判断 -->
+            <block wx:if="{{goods.pictures[0].picUrl!=null}}">
+                <image src="{{serverPrefix+goods.pictures[0].picUrl}}"></image>
+            </block>
+        </view>
+        <view class="goods_info_item goods_name float-left">
+            <text>{{goods.goodsName}}</text>
+        </view>
+        <view class="goods_info_item goods_desc float-left">
+            <text>{{goods.desc}}</text>
+        </view>
+        <view class="goods_info_item selected_options float-left">
+            <text id="selected_text">已选：{{selectedOptions.text}}</text>
+        </view>
+        <view class="goods_info_item goods_price float-left">
+            <text>￥{{goods.price+selectedOptions.extra}}</text>
+        </view>
+    </view>
+
+    <view class="select_goods_options">
+        <view class="goods_num">
+            <text id="gNum">数量</text>
+
+            <view class="action">
+                <view style="width: 40rpx;height: 40rpx;margin-right: 10rpx;">
+                    <image class="" src="/img/icon/reduce.png" bindtap="handleGoodsReduceTap"></image>
+                </view>
+                <text class=" ">{{goodsNum}}</text>
+                <view style="width: 40rpx;height: 40rpx;margin-left: 10rpx;">
+                    <image class="" src="/img/icon/add.png" bindtap="handleGoodsAddTap"></image>
+                </view>
+            </view>
+        </view>
+
+        <scroll-view class="scroll_options"  scroll-y="true">
+            <view class="options" wx:for="{{goods.goodsOptions}}" wx:for-item="option" wx:for-index="index1" wx:key="id">
+                <view class="option_title">
+                    <text>{{option.optionName}}</text>
+                </view>
+                <view class="option_item">
+                    <block wx:for="{{option.goodsOptionItems}}" wx:for-item="optionItem" wx:for-index="index2" wx:key="id">
+                        <view class="option_type type {{optionItem.selectedState ? 'selected' : ''}}" data-index1="{{index1}}" data-index2="{{index2}}" bindtap="handleSelectStateTap">
+                            {{optionItem.optionItem}}
+                        </view>
+                    </block>
+                </view>
+            </view>
+        </scroll-view>
+    </view>
+
+    <view class="add_cart" bindtap="handleAdd2CartGoodsTap">
+        <button class="btn">
+            加入购物车
+        </button>
+    </view>
+</view>
+
+
+<!-- 购物车 -->
+<view class="mask-layer" wx:if="{{GoodsCartInfoShowState}}" catchtap="hideModel">
+</view>
+<!-- 购物车详细弹出 -->
+<view class="cart_selected_goods" wx:if="{{GoodsCartInfoShowState}}" animation="{{animationData}}">
+    <view class="title">
+        <view class="title_name float-left">
+            已选商品
+        </view>
+        <view class="clear_cart float-right" bindtap="handleClearCartTap">
+            <view class="clear_icon float-left" style="width: 50rpx;height: 50rpx;">
+                <image src="/img/icon/delete.png"></image>
+            </view>
+            <block>清空</block>
+        </view>
+    </view>
+
+    <view class="selected_goods_scroll">
+        <scroll-view scroll-y class="cart_scroll">
+            <view class="cart_goods" wx:for="{{cartList}}" wx:for-item="cart" wx:key="goodsId">
+                <view class="cart_goods_img float-left">
+                    <navigator class="all" url="/pages/sub_index_page/goods_info/goods_info?goodsId={{cart.goods.id}}">
+                        <block wx:if="{{cart.goods.pictures[0].picUrl!=null}}">
+                            <image src="{{serverPrefix+cart.goods.pictures[0].picUrl}}"></image>
+                        </block>
+                    </navigator>
+                </view>
+
+                <view class="cart_goods_name cart_goods_item float-left">{{cart.goods.goodsName}}</view>
+                <view class="cart_goods_select cart_goods_item float-left">已选：{{cart.selectedOptions.text}}</view>
+                
+                <view class="cart_goods_action cart_goods_item float-left">
+                    <view class="action_price float-left">
+                        <block>￥{{cart.goods.price+cart.selectedOptions.extra}}</block>
+                    </view>
+                    <view class="num_action float-right">
+                        <image class="reduce {{cart.num==0 ? 'hidden' : ''}}" src="/img/icon/reduce.png" bindtap="handleReduceTap" data-goods-id="{{cart.goodsId}}"></image>
+                        <text class="order_num {{cart.num==0 ? 'hidden' : ''}}">{{cart.num}}</text>
+                        <image class="add" src="/img/icon/add.png" bindtap="handleAddCartGoodsTap" data-goods-id="{{cart.goodsId}}"></image>
+                    </view>
+                </view>
+            </view>
+            
+        </scroll-view>
+    </view>
+</view>
+
+
+<!-- 购物车条 -->
+<view class="cart_bar" wx:if="{{ GoodsCartInfoShowState||(cartList.length >0 && cartShowState)}}">
+    <view class="cart float-left">
+        <view class="cart_btn" bindtap="handleCartBtnTap">
+            <view class="cart_icon">
+                <image src="/img/icon/gouwuchekong.png"></image>
+            </view>    
+            <block>购物车</block>        
+        </view>
+    </view>
+    <view class="total_price float-left">
+        <block>￥{{totalPrice}}</block>
+    </view>
+    <view class="buy_now float-left" bindtap="handle2BuyInfo">
+        <block>选好了</block>
+    </view>
+</view>

@@ -1,0 +1,54 @@
+<view class='container'>
+  <view class="comment-cotent">
+    <block wx:for="{{commentList.data}}" wx:for-item="comment" wx:key="id">
+      <view class="comment-item user-comment">
+        <view class="user-comment-title">
+          <view class="user-pic float-left">
+            <block wx:if="{{!comment.avatarUrl}}">
+              <image class="user-pic-img" src="/img/icon/default_header.png"></image>
+            </block>
+            <block wx:if="{{comment.avatarUrl}}">
+              <image class="user-pic-img" src="{{comment.avatarUrl}}"></image>
+            </block>
+          </view>
+
+          <view class="user-title-mid float-left">
+            <view class="user-name">
+              {{comment.nickName}}
+            </view>
+            <view class="user-comment-score">
+              <!-- <image class="star" src="/img/icon/star-1.png"></image>-->
+              环境:{{comment.environmentScore}} 味道:{{comment.tasteScore}} 服务:{{comment.serviceScore}}
+            </view>
+          </view>
+          <!-- 时间 -->
+          <view class="user-comment-date float-left">
+            {{comment.createTime}}
+          </view>
+        </view>
+
+        <view class="user-comment-content">
+          <view class="user-comment-text">
+            {{comment.content}}
+          </view>
+          <view wx:if="{{comment.picUrls}}" class="user-comment-pics">
+            <block wx:for="{{comment.picUrls}}" wx:for-item="pic" wx:key="*this">
+              <image src="{{serverPrefix+pic.picUrl}}"></image>
+            </block>
+          </view>
+          <view wx:if="{{comment.reply}}" class="user-comment-reply">
+            商家回复：{{comment.reply}}
+          </view>
+        </view>
+        <!-- 操作 -->
+        
+      </view>
+    </block>
+    <view class="bottom" wx:if="{{reachedBottom}}">我也是有底线的哦</view>
+  </view>
+</view>
+
+<view class="empty" wx:if="{{!showflag}}">
+  <image src="/img/icon/empty2.png"></image>
+  <text>亲，您暂时没有评价呢</text>
+</view>

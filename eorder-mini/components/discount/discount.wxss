@@ -1,0 +1,12 @@
+/* components/discount/discount.wxss */
+.discountBar{
+    margin: 0 3rpx;
+    width: 120rpx;
+    height: 25rpx;
+    border: 3rpx solid rgb(250, 165, 134);
+    border-radius: 8rpx;
+    font-size: 20rpx ;
+    color: rgb(209, 83, 37);
+    line-height: 22rpx;
+    text-align: center;
+}

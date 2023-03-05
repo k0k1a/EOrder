@@ -1,0 +1,10 @@
+<view class="container">
+
+    <view class="success">
+        <image src="/img/icon/pay-success.png"></image>
+    </view>
+
+    <view class="tip_txt">支付成功</view>
+    <!-- <view wx:elif="{{type==ownType.onlyTable}}" class="tip_txt">订桌成功</view> -->
+    <view class='ensure' bindtap='checkOrder'>查看详情</view>
+</view>

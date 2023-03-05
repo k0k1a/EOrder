@@ -1,0 +1,21 @@
+<view class="container">
+    <view class="input-container">
+        <view class="input-item input-name">
+            <!-- <input placeholder="请输入手机号" /> -->
+            <!-- 注释获取验证码 -->
+            <input class="input-phone float-left" type="number" placeholder="请输入手机号" bindinput="handlePhoneInput" />
+            <text wx:if="{{!canSend}}" class="input-code float-left">{{verificationText}}</text>
+            <text wx:if="{{canSend}}" class="code-active input-code float-left" bindtap="handleGetVerifyTap">{{verificationText}}</text>
+        </view>
+        <!-- 注释获取验证码 暂时不做-->
+        <view class="input-item input-verification-code">
+            <input placeholder="请输入验证码"/>
+        </view>
+        <view class="input-item input-password">
+            <input password type="text" placeholder="密码" bindinput="handlePasswordInput"/>
+        </view>
+        
+        <view wx:if="{{!(canSend&&isPassword)}}" class="login-btn">登录</view>
+        <view wx:if="{{canSend&&isPassword}}" class="login-active login-btn" bindtap="loginTap">登录</view>
+    </view>
+</view>
