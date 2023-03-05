@@ -74,7 +74,7 @@ public class LoginController {
         //生成登录状态jwt token
         String token = JWTUtils.createJWT(secretKey);
 
-        //存入redis设置失效时间，3天
+        //存入redis设置失效时间，3天 FIXME 这里可能不应该存redis，token设置cookie就行了
         Object data = result.getData();
         redisTemplate.opsForValue().set(SystemConstant.LOGIN_TOKEN_KEY + token, data, SystemConstant.SYSTEM_LOGIN_TIMEOUT, TimeUnit.DAYS);
 
