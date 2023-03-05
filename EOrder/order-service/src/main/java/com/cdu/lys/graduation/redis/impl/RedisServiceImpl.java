@@ -76,6 +76,7 @@ public class RedisServiceImpl implements RedisService {
     public boolean checkAdminTokenValid(String token) {
         String username = (String) JWTUtils.parseJWT(token, secretKey).get("username");
 
+        // FIXME 后面的几行可能是垃圾，不用存在redis，只用检查jwt就行了
         String key = SystemConstant.ADMIN_LOGIN_TOKEN_KEY + username;
 
         String value = redisTemplate.opsForValue().get(key);
