@@ -47,8 +47,7 @@ Java技术栈：
 
 1. MySQL是否导入（目录下的sql文件）
 2. redis是否配置正确
-3. **后台跨域是否配置正确（跨域配置：order-start > com.xxxx.config.WebMvcConfig）**
-   - [什么是跨域？](https://www.yuque.com/u12141080/wnnf60/lsrvtn?singleDoc# 《跨域》)
+3. **后台跨域是否配置正确（跨域配置：order-start > com.xxxx.config.WebMvcConfig）**[跨域资源共享 CORS 详解 - 阮一峰的网络日志](https://www.ruanyifeng.com/blog/2016/04/cors.html)
 4. 管理员账号
    - 92024109936，exR4HT7jzh7QPeRx
 
