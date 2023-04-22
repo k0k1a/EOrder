@@ -43,6 +43,15 @@ Java技术栈：
 
 #### 4. 使用说明
 
+##### 4.0 使用前务必确认
+
+1. MySQL是否导入（目录下的sql文件）
+2. redis是否配置正确
+3. **后台跨域是否配置正确（跨域配置：order-start > com.xxxx.config.WebMvcConfig）**
+   - [什么是跨域？](https://www.yuque.com/u12141080/wnnf60/lsrvtn?singleDoc# 《跨域》)
+4. 管理员账号
+   - 92024109936，exR4HT7jzh7QPeRx
+
 ##### 4.1 Java端使用说明
 
 1. MySQL数据库导入：建立db_school_eorder数据库将EOrder根目录下的db_school_eorder.sql文件导入。
